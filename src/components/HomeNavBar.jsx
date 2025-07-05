@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import colors from '../styles/colors';
 
 const HomeNavBar = () => {
-
+  const handlenon=()=>{
+    navigate('/window');
+  };
    const navigate = useNavigate();
 
   const handleAddClick = () => {
@@ -29,7 +31,7 @@ const HomeNavBar = () => {
         </OuterCircle>
       </CenterButtonWrapper>
 
-      <NavItem>
+      <NavItem onClick={handlenon}>
         <Icon icon="mdi:water-outline" width={32} height={32} color={colors.black} />
         <Label>커피말고</Label>
       </NavItem>
