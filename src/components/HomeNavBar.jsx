@@ -13,10 +13,14 @@ const HomeNavBar = () => {
     navigate('/coffee-log'); 
   };
 
+  const handleAttendanceClick = () => {
+    navigate('/attendance-stamp');
+  };
+
   return (
     <NavBarWrapper>
 
-      <NavItem>
+      <NavItem onClick={handleAttendanceClick} style={{ cursor: 'pointer' }}>
         <Icon icon="uil:calender" width={24} height={24} color={colors.black} />
         <Label>출석도장</Label>
       </NavItem>

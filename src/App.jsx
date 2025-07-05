@@ -6,6 +6,7 @@ import CoffeeLogPage from './pages/coffeeLogs';
 import LogCompletePage from './pages/coffeeLogs/LogCompletePage';
 import MyPage from './pages/settings/MyPage';
 import LastCoffeeReports from './pages/lastCoffeeRecords/LastCoffeeReport';
+import AttendanceStampPage from './pages/attendanceStamp';
 
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/log-complete" element={<LogCompletePage />} />
         <Route path="/lastCoffeeRecords" element={<LastCoffeeRecords />} />
         <Route path="/lastCoffeeReports" element={<LastCoffeeReports />} />
+        <Route path="/attendance-stamp" element={<AttendanceStampPage />} />
       </Routes>
     </BrowserRouter>
   );
