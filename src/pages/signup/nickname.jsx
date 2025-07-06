@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import Phone from '../../components/Phone';
 import Header1 from '../../components/Header';
@@ -54,21 +55,24 @@ function NameInputPage() {
     }
 
     try {
-      const response = await fetch('http://localhost:4000/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, password, name }),
+      const response = await axios.post('http://localhost:4000/signup', {
+        id,
+        password,
+        name,
       });
 
-      if (response.ok) {
+      if (response.status === 200) {
         navigate('/con', { state: { id, password, name } });
       } else {
-        const data = await response.json();
-        alert(data.message || '회원가입에 실패했습니다.');
+        alert(response.data.message || '회원가입에 실패했습니다.');
       }
     } catch (error) {
       console.error('회원가입 요청 실패:', error);
-      alert('서버와 연결에 실패했습니다.');
+      if (error.response && error.response.data) {
+        alert(error.response.data.message || '회원가입에 실패했습니다.');
+      } else {
+        alert('서버와 연결에 실패했습니다.');
+      }
     }
   };
 
