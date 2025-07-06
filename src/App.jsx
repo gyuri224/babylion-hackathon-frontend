@@ -6,8 +6,6 @@ import CoffeeLogPage from './pages/coffeeLogs';
 import LogCompletePage from './pages/coffeeLogs/LogCompletePage';
 import MyPage from './pages/settings/MyPage';
 import LastCoffeeReports from './pages/lastCoffeeRecords/LastCoffeeReport';
-import AttendanceStampPage from './pages/attendanceStamp';
-
 import WindowSelector from './pages/noncoffee';
 import LoginPage from "./pages/login";
 import LoginSetting from "./pages/loginsetting";
@@ -20,8 +18,6 @@ import SecondSplash from './pages/secondsplash';
 import LastSplash from './pages/lastsplash';
 import Password from './pages/password';
 import PasswordCheck from './pages/pwcheck';
-import GifticonPage from './pages/settings/GifticonPage';
-import MyGiftIcons from './pages/settings/MyGiftIcons';
 
 const App = () => {
   return (
@@ -41,12 +37,12 @@ const App = () => {
         <Route path="/second" element={<SecondSplash />} />
         <Route path="/last" element={<LastSplash />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/loginsetting" element={<LoginSetting />} />
+        <Route path="/api/coffee/login" element={<LoginSetting />} />
         <Route path="/idinput" element={<InputIdpage />} />
         <Route path="/window" element={<WindowSelector/>} />
         <Route path="/password" element={<Password/>} />
         <Route path="/pwcheck" element={<PasswordCheck/>} />
-        <Route path="/name" element={<NameInputPage/>} />
+        <Route path="/api/coffee/signup" element={<NameInputPage/>} />
         <Route path="/con" element={<CongraturationPage/>} />
         <Route path="/settings/GifticonPage" element={<GifticonPage />} />
         <Route path="/settings/MyGiftIcons" element={<MyGiftIcons />} />

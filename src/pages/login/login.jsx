@@ -1,12 +1,12 @@
 import React from 'react';
-import img2 from '../img/images.jpg';
+import img2 from '../../img/images.jpg';
 import { useNavigate } from 'react-router-dom';
 
 function LoginPage() {
   const navigate = useNavigate(); // 👈 페이지 이동 함수
 
   const handleLogin = () => {
-    navigate('/loginsetting'); // 로그인 시 /loginsetting 으로 이동
+    navigate('/api/coffee/login'); // 로그인 시 /loginsetting 으로 이동
   };
 
   const handleSignup = () => {

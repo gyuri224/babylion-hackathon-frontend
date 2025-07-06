@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import img2 from '../img/images.jpg';
+import img2 from '../../img/images.jpg';
+import { useSwipeable } from 'react-swipeable';
+import PageContainer from '../../components/PageContainer';
 
 function Logo() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate('/first'); // 2초 후 /next 경로로 이동
-    }, 2000); // 2000ms = 2초
-
-    // 컴포넌트가 언마운트될 경우 타이머 정리
-    return () => clearTimeout(timer);
-  }, [navigate]);
+  const handlers = useSwipeable({
+    onSwipedLeft: () => {
+      navigate('/first');     
+    },
+    preventDefaultTouchmoveEvent: true,
+    trackTouch: true,
+  });
 
   const styles = {
     page: {
@@ -32,8 +33,12 @@ function Logo() {
   };
 
   return (
+    <div style={styles.PageContainer}>
+    <div {...handlers}>
     <div style={styles.page}>
       <img src={img2} alt="중앙 이미지" style={styles.image} />
+    </div>
+    </div>
     </div>
   );
 }
