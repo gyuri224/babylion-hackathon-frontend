@@ -50,9 +50,7 @@ const TextBox = styled.div`
 `;
 
 const HelloText = styled.div`
-  font-size: ${typography.sub_title.fontSize};
-  font-weight: ${typography.sub_title.fontWeight};
-  line-height: ${typography.sub_title.lineHeight};
+  ${typography.sub_title};
   color: ${colors.black};
 `;
 

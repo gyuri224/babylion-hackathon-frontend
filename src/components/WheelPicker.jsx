@@ -24,7 +24,6 @@ const WheelPicker = ({ value, onChange, show, setShow, years, months, days, amou
   return (
     <SliderContainer onClick={() => setShow(false)}>
       <WheelSheet onClick={e => e.stopPropagation()}>
-        <CompleteButton onClick={() => setShow(false)}>완료</CompleteButton>
         {type === 'amount' ? (
           <>
             <WheelsRow>
@@ -36,18 +35,19 @@ const WheelPicker = ({ value, onChange, show, setShow, years, months, days, amou
           </>
         ) : (
           <>
-            <WheelsRow>
-              {renderWheel(years, value.year, v => onChange('year', v))}
-              {renderWheel(months, value.month, v => onChange('month', v))}
-              {renderWheel(days, value.day, v => onChange('day', v))}
-            </WheelsRow>
             <LabelsRow>
               <WheelLabel>년</WheelLabel>
               <WheelLabel>월</WheelLabel>
               <WheelLabel>일</WheelLabel>
             </LabelsRow>
+            <WheelsRow>
+              {renderWheel(years, value.year, v => onChange('year', v))}
+              {renderWheel(months, value.month, v => onChange('month', v))}
+              {renderWheel(days, value.day, v => onChange('day', v))}
+            </WheelsRow>
           </>
         )}
+        <CompleteButton onClick={() => setShow(false)}>완료</CompleteButton>
       </WheelSheet>
     </SliderContainer>
   );
@@ -58,8 +58,8 @@ export default WheelPicker;
 const WheelSheet = styled.div`
   background: #fff;
   border-radius: 24px;
-  padding: 24px 0 30px 0;
-  margin: 0 0 20px 0;
+  padding: 24px 0 24px 0;
+  margin: 0 0 0px 0;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
@@ -110,6 +110,7 @@ const LabelsRow = styled.div`
   justify-content: center;
   align-items: center;
   gap: 60px;
+  margin-bottom: 8px;
   margin-top: 8px;
 `;
 

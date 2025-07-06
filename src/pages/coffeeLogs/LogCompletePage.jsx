@@ -10,7 +10,7 @@ const LogCompletePage = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/'); 
+      navigate('/home'); 
     }, 2000); 
 
     return () => clearTimeout(timer); 
@@ -34,8 +34,6 @@ const Wrapper = styled.div`
 `;
 
 const Message = styled.h1`
-  font-size: ${typography.title.fontSize};
-  font-weight: ${typography.title.fontWeight};
-  line-height: ${typography.title.lineHeight};
+  ${typography.title};
   color: ${colors.black};
 `;

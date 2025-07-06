@@ -3,11 +3,11 @@ import styled from 'styled-components';
 import colors from '../styles/colors';
 import { typography } from '../styles/typography';
 
-const MainButton = ({ children, ...props }) => (
+const SubButton = ({ children, ...props }) => (
   <Button {...props}>{children}</Button>
 );
 
-export default MainButton;
+export default SubButton;
 
 const Button = styled.button`
   width: 327px;

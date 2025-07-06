@@ -1,8 +1,40 @@
+import { css } from 'styled-components';
+
 export const typography = {
-  title: { fontSize: '36px', fontWeight: 700, lineHeight: '120%', fontFamily: 'Pretendard, sans-serif' },       
-  sub_title: { fontSize: '18px', fontWeight: 600, lineHeight: '120%', fontFamily: 'Pretendard, sans-serif' },   
-  des_bold: { fontSize: '14px', fontWeight: 600, lineHeight: '150%', fontFamily: 'Pretendard, sans-serif' },    
-  des: { fontSize: '14px', fontWeight: 400, lineHeight: '150%', fontFamily: 'Pretendard, sans-serif' },         
-  caption: { fontSize: '12px', fontWeight: 400, lineHeight: '150%', fontFamily: 'Pretendard, sans-serif' },     
-  caption_02: { fontSize: '8px', fontWeight: 400, lineHeight: '150%', fontFamily: 'Pretendard, sans-serif' },   
+  title: css`
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 120%;
+    font-family: Pretendard, sans-serif;
+  `,
+  sub_title: css`
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 120%;
+    font-family: Pretendard, sans-serif;
+  `,
+  des_bold: css`
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 150%;
+    font-family: Pretendard, sans-serif;
+  `,
+  des: css`
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 150%;
+    font-family: Pretendard, sans-serif;
+  `,
+  caption: css`
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 150%;
+    font-family: Pretendard, sans-serif;
+  `,
+  caption_02: css`
+    font-size: 8px;
+    font-weight: 400;
+    line-height: 150%;
+    font-family: Pretendard, sans-serif;
+  `,
 };

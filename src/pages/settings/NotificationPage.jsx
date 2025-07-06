@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
 import PageContainer from '../../components/PageContainer';
+import HeaderBar from '../../components/HeaderBar';
 
 const notifications = [
   {
@@ -28,7 +29,7 @@ const NotificationPage = () => {
   return (
     <PageContainer>
       <Wrapper>
-        <Title>알림</Title>
+        <HeaderBar title="알림" />
         <List>
           {notifications.map((item) => (
             <NotificationCard key={item.id} $highlight={item.highlight}>

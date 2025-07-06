@@ -53,7 +53,5 @@ const ButtonWrapper = styled.div`
 
 const Title = styled.h1`
   color: ${colors.black};
-  font-size: ${typography.des.fontSize};
-  font-weight: ${typography.des.fontWeight};
-  line-height: ${typography.des.lineHeight};
+  ${typography.des};
 `;

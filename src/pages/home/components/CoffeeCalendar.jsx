@@ -99,7 +99,7 @@ const Wrapper = styled.div`
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
               0 -2px 6px rgba(0, 0, 0, 0.05);
   padding: 20px;
-  width: 90%;
+  width: 87%;
   margin: 20px auto 0;
   text-align: center;
 `;
@@ -155,4 +155,23 @@ const ToggleButton = styled.button`
   font-weight: 600;
   cursor: pointer;
   ${typography.des};
+`;
+
+const PageContainer = styled.div`
+  width: 100%;
+  max-width: 375px;
+  padding: 0;
+  margin: 0 auto;
+  padding-bottom: 137px;
+`;
+
+const NavBarWrapper = styled.div`
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 100;
+  background-color: ${colors.white};
+  // ...생략
 `;

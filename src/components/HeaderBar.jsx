@@ -20,6 +20,7 @@ const HeaderBar = ({ title = '기록하기' }) => {
 export default HeaderBar;
 
 const Header = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -35,8 +36,12 @@ const BackButton = styled.button`
 
 const Title = styled.h1`
   color: ${colors.black};
-  font-size: ${typography.des.fontSize};
-  font-weight: ${typography.des.fontWeight};
-  line-height: ${typography.des.lineHeight};
-  margin: 0 auto;
+  ${typography.des};
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  width: max-content;
+  pointer-events: none;
 `; 

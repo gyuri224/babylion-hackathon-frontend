@@ -4,6 +4,9 @@ import colors from '../../../styles/colors';
 import { typography } from '../../../styles/typography';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
+import frame359 from '../../../assets/reportGraphic/Frame 359.png';
+import frame370 from '../../../assets/reportGraphic/Frame 370.png';
+import chatgptImage from '../../../assets/reportGraphic/ChatGPT Image 2025년 7월 5일 오후 11_29_24 1.png';
 
 const reports = [
   { id: 1, title: '한 달 평균', subtitle: '32잔의 커피를 마셨어요' },
@@ -16,6 +19,12 @@ const reports = [
 const CARD_HEIGHT = 254;
 const CARD_WIDTH = 172;
 const GAP = 16;
+
+const reportImages = {
+  1: frame359,
+  2: frame370,
+  3: chatgptImage,
+};
 
 const CoffeeReport = () => {
   const sliderRef = useRef(null);
@@ -45,10 +54,14 @@ const CoffeeReport = () => {
         {reports.map((report) => (
           <Card key={report.id}>
             <TextBox>
-            <Subtitle>{report.title}</Subtitle>
-            <Subtitle>{report.subtitle}</Subtitle>
+              <Subtitle>{report.title}</Subtitle>
+              <Subtitle>{report.subtitle}</Subtitle>
             </TextBox>
-            <GraphicBox>그래픽</GraphicBox>
+            <GraphicBox>
+              {reportImages[report.id] && (
+                <img src={reportImages[report.id]} alt="그래픽" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+              )}
+            </GraphicBox>
           </Card>
         ))}
       </Slider>
@@ -76,7 +89,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: left;
-  width: 90%;
+  width: 87%;
   margin: 20px auto 0 auto;
   flex-direction: column;
 `;
@@ -108,11 +121,11 @@ const Card = styled.div`
   width: 172px;
   height: 254px;
   scroll-snap-align: center;
-  background-color: ${colors.main};
+  background-color: ${colors.sub};
   border-radius: 20px;
   padding: 20px;
   flex-shrink: 0;
-  color: ${colors.sub};
+  color: ${colors.main};
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
@@ -126,17 +139,13 @@ const TextBox = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: ${typography.des_bold.fontSize};
-  font-weight: ${typography.des_bold.fontWeight};
-  line-height: ${typography.des_bold.lineHeight};
+  ${typography.des_bold};
   color: ${colors.black};
 `;
 
 const Subtitle = styled.div`
-  font-size: ${typography.des_bold.fontSize};
-  font-weight: ${typography.des_bold.fontWeight};
-  line-height: ${typography.des_bold.lineHeight};
-  color: ${colors.white};
+  ${typography.des_bold};
+  color: ${colors.main};
 `;
 
 const GraphicBox = styled.div`
@@ -164,6 +173,7 @@ const IndicatorBar = styled.div`
   height: 100%;
   background-color: ${colors.main};
   transition: transform 0.2s ease-out;
+  border-radius: 3px;
 `;
 
 const TitleRow = styled.div`
@@ -177,8 +187,6 @@ const PastButton = styled.button`
   background: none;
   border: none;
   color: ${colors.black_sub};
-  font-size: ${typography.caption.fontSize};
-  font-weight: ${typography.caption.fontWeight};
-  line-height: ${typography.caption.lineHeight};
+  ${typography.caption};
   cursor: pointer;
 `;

@@ -28,7 +28,7 @@ const CoffeeLogPage = () => {
   const [showMenuList, setShowMenuList] = useState(false);
   const [recentMenus, setRecentMenus] = useState([]);
   const [showAmountWheel, setShowAmountWheel] = useState(false);
-  const amountOptions = Array.from({ length: 10 }, (_, i) => String(i + 1));
+  const amountOptions = Array.from({ length: 10 }, (_, i) => String(i));
 
   useEffect(() => {
     localStorage.setItem('recentMenus', JSON.stringify(recentMenus));
@@ -88,7 +88,16 @@ const CoffeeLogPage = () => {
       <HeaderBar />
       <ContentWrapper>
         <Form onSubmit={handleSubmit}>
-          <DateDisplay onClick={() => setShowPicker(!showPicker)}>{fullDateText}</DateDisplay>
+          <DateDisplay 
+            onClick={() => setShowPicker(!showPicker)}
+            $selected={
+              pickerValue.year !== `${new Date().getFullYear()}년` ||
+              pickerValue.month !== `${new Date().getMonth() + 1}월` ||
+              pickerValue.day !== `${new Date().getDate()}일`
+            }
+          >
+            {fullDateText}
+          </DateDisplay>
           <WheelPicker
             value={pickerValue}
             onChange={handleDateChange}
@@ -183,12 +192,12 @@ const DateDisplay = styled.div`
   border: 2px solid ${colors.sub};
   border-radius: 8px;
   background-color: ${colors.white};
-  color: ${colors.black_sub};
+  color: ${({ $selected }) => ($selected ? colors.black : colors.black_sub)};
   box-sizing: border-box;
   cursor: pointer;
   &:focus, &:active {
     border: 2px solid ${colors.sub};
-    color: ${colors.black_sub};
+    color: ${({ $selected }) => ($selected ? colors.black : colors.black_sub)};
   }
 `;
 

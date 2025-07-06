@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import colors from '../styles/colors';
 
 const HomeNavBar = () => {
-
+  const handlenon=()=>{
+    navigate('/window');
+  };
    const navigate = useNavigate();
 
   const handleAddClick = () => {
@@ -18,34 +20,38 @@ const HomeNavBar = () => {
   };
 
   return (
-    <NavBarWrapper>
-
-      <NavItem onClick={handleAttendanceClick} style={{ cursor: 'pointer' }}>
-        <Icon icon="uil:calender" width={24} height={24} color={colors.black} />
-        <Label>출석도장</Label>
-      </NavItem>
-
-      <CenterButtonWrapper onClick={handleAddClick}>
-        <OuterCircle>
-          <InnerCircle>
-            <MdAdd size={44} color="white" />
-          </InnerCircle>
-        </OuterCircle>
-      </CenterButtonWrapper>
-
-      <NavItem>
-        <Icon icon="mdi:water-outline" width={32} height={32} color={colors.black} />
-        <Label>커피말고</Label>
-      </NavItem>
-    </NavBarWrapper>
+      <NavBarWrapper>
+        <NavItem onClick={handleAttendanceClick} style={{ cursor: 'pointer' }}>
+          <Icon icon="uil:calender" width={24} height={24} color={colors.black} />
+          <Label>출석도장</Label>
+        </NavItem>
+        <CenterButtonWrapper onClick={handleAddClick}>
+          <OuterCircle>
+            <InnerCircle>
+              <MdAdd size={44} color="white" />
+            </InnerCircle>
+          </OuterCircle>
+        </CenterButtonWrapper>
+        <NavItem onClick={handlenon}>
+          <Icon icon="mdi:water-outline" width={32} height={32} color={colors.black} />
+          <Label>커피말고</Label>
+        </NavItem>
+      </NavBarWrapper>
   );
 };
 
 export default HomeNavBar;
+
 const NavBarWrapper = styled.div`
-  position: relative;
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 375px;
+  height: 100px;
+  z-index: 100;
   background-color: ${colors.white};
-  padding: 20px 0 12px;
+  padding: 20px 0 0 0;
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
@@ -58,6 +64,8 @@ const NavItem = styled.div`
   align-items: center;
   font-size: 12px;
   z-index: 1;
+  width: 375px;
+  height: 100px;
 `;
 
 const Label = styled.div`

@@ -155,9 +155,7 @@ const MenuButton = styled.button`
   border: 1.5px solid ${(props) => (props.selected ? colors.white : colors.black_sub)};
   background-color: ${(props) => (props.selected ? colors.main : colors.white)};
   color: ${(props) => (props.selected ? colors.white : colors.black)};
-  font-size: ${typography.des.fontSize};
-  font-weight: ${typography.des.fontWeight};
-  line-height: ${typography.des.lineHeight};
+  ${typography.des};
   cursor: pointer;
   transition: background 0.15s, color 0.15s, border 0.15s;
   text-align: center;

@@ -5,6 +5,7 @@ import colors from '../../../styles/colors';
 import { typography } from '../../../styles/typography';
 import PageContainer from '../../../components/PageContainer';
 import axios from 'axios';                           
+import frame354 from '../../../assets/Frame 354.png';
 
 const MonthCoffeeCount = ({ month = '7월' }) => {
   const [count, setCount] = useState(0);             
@@ -27,10 +28,15 @@ const MonthCoffeeCount = ({ month = '7월' }) => {
         <Title>{month}에 내가 마신 커피</Title>
         <CoffeeInfo>
           <Icon icon="bx:coffee-togo" width="32" height="32" color={colors.main} />
-          <CountText>x{count}잔</CountText>
+          <CountText>
+            <img src={require('../../../assets/icon_multiply.png')} alt="x" style={{ width: 12.37, height: 12.37 }} />
+            {count}잔
+          </CountText>
         </CoffeeInfo>
       </LeftSection>
-      <GraphicBox>그래픽</GraphicBox>
+      <GraphicBox>
+        <img src={frame354} alt="커피 그래픽" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+      </GraphicBox>
     </Container>
   );
 };
@@ -46,7 +52,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
+  width: 87%;
   margin: 20px auto 0 auto;
 `;
 
@@ -61,22 +67,23 @@ const CoffeeInfo = styled.div`
   display: flex;
   align-items: center;
   margin-top: 8px;
+  gap: 4px;
 `;
 
 const CountText = styled.span`
   ${typography.title};
   color: ${colors.main};
   margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 `;
 
 const GraphicBox = styled.div`
-  background-color: ${colors.sub};
-  border-radius: 14px;
-  width: 100px;
-  height: 80px;
+  width: 120px;
+  height: 90px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 600;
-  color: ${colors.black};
+  overflow: hidden;
 `;

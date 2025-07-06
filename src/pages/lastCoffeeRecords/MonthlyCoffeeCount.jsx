@@ -4,6 +4,7 @@ import { Icon } from '@iconify/react';
 import colors from '../../styles/colors';
 import { typography } from '../../styles/typography';
 import axios from 'axios';
+import frame369 from '../../assets/Frame 369.png';
 
 const getMonthList = (currentMonth) => {
   // 1월부터 currentMonth-1월까지 배열 생성
@@ -42,10 +43,15 @@ const MonthCoffeeCount = ({ month = '7월' }) => {
           {month}에 내가 마신 커피
           <CoffeeInfo>
             <Icon icon="bx:coffee-togo" width="32" height="32" color={colors.main} />
-            <CountText>x{count}잔</CountText>
+            <CountText>
+              <img src={require('../../assets/icon_multiply.png')} alt="x" style={{ width: 12.37, height: 12.37 }} />
+              {count}잔
+            </CountText>
           </CoffeeInfo>
         </Title>
-        <GraphicBox>그래픽</GraphicBox>
+        <GraphicBox>
+        <img src={frame369} alt="커피 그래픽" style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }} />
+        </GraphicBox>
       </Container>
     </>
   );
@@ -62,7 +68,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
+  width: 87%;
   margin: 20px auto 0 auto;
 `;
 
@@ -77,7 +83,7 @@ const Title = styled.div`
   ${typography.des_bold};
   color: ${colors.black};
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `;
 
 const CoffeeInfo = styled.div`
@@ -85,25 +91,28 @@ const CoffeeInfo = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 8px;
+  gap: 4px;
 `;
 
 const CountText = styled.span`
   ${typography.title};
   color: ${colors.main};
   margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
 `;
 
 const GraphicBox = styled.div`
-  background-color: ${colors.sub};
+  background-color: ${colors.white};
   border-radius: 14px;
-  width: 90%;
-  height: 120px;
+  width: 285px;
+  height: 191px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: 600;
   color: ${colors.black};
-  margin-top: 24px;
 `;
 
 const MonthRow = styled.div`

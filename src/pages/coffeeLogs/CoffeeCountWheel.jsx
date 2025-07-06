@@ -46,8 +46,8 @@ export default WheelPicker;
 const WheelSheet = styled.div`
   background: #fff;
   border-radius: 24px;
-  padding: 24px 0 30px 0;
-  margin: 0 0 20px 0;
+  padding: 0px 0 0px 0;
+  margin: 53px 0 54px 0;
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   display: flex;
   flex-direction: column;
