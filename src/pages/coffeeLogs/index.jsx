@@ -8,6 +8,7 @@ import MenuModal from './MenuModal';
 import HeaderBar from '../../components/HeaderBar';
 import PageContainer from '../../components/PageContainer';
 import MainButton from '../../components/MainButton';
+import axios from 'axios';
 
 const CoffeeLogPage = () => {
   const navigate = useNavigate();
@@ -55,11 +56,7 @@ const CoffeeLogPage = () => {
       quantity: Number(amount),
     };
     try {
-      await fetch('/api/coffee/record', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
+      await axios.post('/api/coffee/record', body);
       setRecentMenus((prev) => {
         const updated = [menu, ...prev.filter((m) => m !== menu)];
         localStorage.setItem('recentMenus', JSON.stringify(updated.slice(0, 5)));

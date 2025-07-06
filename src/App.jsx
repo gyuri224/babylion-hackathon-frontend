@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+
 import Home from './pages/home';
 import LastCoffeeRecords from './pages/lastCoffeeRecords';
 import NotificationPage from './pages/settings/NotificationPage';
@@ -6,18 +7,25 @@ import CoffeeLogPage from './pages/coffeeLogs';
 import LogCompletePage from './pages/coffeeLogs/LogCompletePage';
 import MyPage from './pages/settings/MyPage';
 import LastCoffeeReports from './pages/lastCoffeeRecords/LastCoffeeReport';
-import WindowSelector from './pages/noncoffee';
-import LoginPage from "./pages/login";
-import LoginSetting from "./pages/loginsetting";
-import InputIdpage from "./pages/Idinput";
-import CongraturationPage from "./pages/congratulation";
-import NameInputPage from "./pages/nickname";
-import Logo from './pages/logo';
-import FirstSplash from './pages/firstsplash';
-import SecondSplash from './pages/secondsplash';
-import LastSplash from './pages/lastsplash';
-import Password from './pages/password';
-import PasswordCheck from './pages/pwcheck';
+
+import WindowSelector from './pages/etc/noncoffee';
+import LoginPage from './pages/login/login';
+import LoginSetting from './pages/login/loginsetting';
+import InputIdpage from './pages/signup/Idinput';
+import CongraturationPage from './pages/signup/congratulation';
+import NameInputPage from './pages/signup/nickname';
+import Password from './pages/signup/password';
+import PasswordCheck from './pages/signup/pwcheck';
+
+import Logo from './pages/splash/logo';
+import FirstSplash from './pages/splash/firstsplash';
+import SecondSplash from './pages/splash/secondsplash';
+import LastSplash from './pages/splash/lastsplash';
+
+// ❗ 아래 세 컴포넌트는 정의되지 않았으므로 주석 처리 (필요시 경로 알려주세요)
+// import AttendanceStampPage from './pages/attendance/AttendanceStampPage';
+// import GifticonPage from './pages/settings/GifticonPage';
+// import MyGiftIcons from './pages/settings/MyGiftIcons';
 
 const App = () => {
   return (
@@ -30,23 +38,24 @@ const App = () => {
         <Route path="/log-complete" element={<LogCompletePage />} />
         <Route path="/lastCoffeeRecords" element={<LastCoffeeRecords />} />
         <Route path="/lastCoffeeReports" element={<LastCoffeeReports />} />
-        <Route path="/attendance-stamp" element={<AttendanceStampPage />} />
+
+        {/* ❗ 해당 컴포넌트가 정의되지 않아 주석 처리 */}
+        {/* <Route path="/attendance-stamp" element={<AttendanceStampPage />} /> */}
+        {/* <Route path="/settings/GifticonPage" element={<GifticonPage />} /> */}
+        {/* <Route path="/settings/MyGiftIcons" element={<MyGiftIcons />} /> */}
 
         <Route path="/" element={<Logo />} />
-        <Route path="first" element={<FirstSplash />} />
+        <Route path="/first" element={<FirstSplash />} />
         <Route path="/second" element={<SecondSplash />} />
         <Route path="/last" element={<LastSplash />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/api/coffee/login" element={<LoginSetting />} />
         <Route path="/idinput" element={<InputIdpage />} />
-        <Route path="/window" element={<WindowSelector/>} />
-        <Route path="/password" element={<Password/>} />
-        <Route path="/pwcheck" element={<PasswordCheck/>} />
-        <Route path="/api/coffee/signup" element={<NameInputPage/>} />
-        <Route path="/con" element={<CongraturationPage/>} />
-        <Route path="/settings/GifticonPage" element={<GifticonPage />} />
-        <Route path="/settings/MyGiftIcons" element={<MyGiftIcons />} />
-
+        <Route path="/window" element={<WindowSelector />} />
+        <Route path="/password" element={<Password />} />
+        <Route path="/pwcheck" element={<PasswordCheck />} />
+        <Route path="/api/coffee/signup" element={<NameInputPage />} />
+        <Route path="/con" element={<CongraturationPage />} />
       </Routes>
     </BrowserRouter>
   );
