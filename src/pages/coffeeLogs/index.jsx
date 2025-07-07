@@ -52,15 +52,21 @@ const CoffeeLogPage = () => {
     e.preventDefault();
     const fullDate = `${pickerValue.year.replace('년', '')}-${pickerValue.month.replace('월', '').padStart(2, '0')}-${pickerValue.day.replace('일', '').padStart(2, '0')}`;
     const body = {
-      userId: 1,
+      userId: 4,
       date: fullDate,
-      coffeeName: menu,
+      coffeeType: menu,
       quantity: Number(amount),
     };
     try {
-      await axios.post('/api/coffee/record', body);
+      await axios.post('http://localhost:8080/api/coffee/record', body, {headers: {
+    Authorization: `Bearer ${localStorage.getItem('accessToken')}` // 또는 상태관리에서 꺼냄
+  }});
       // 출석 체크 API 호출
-      await axios.post('/api/coffee/attend/check');
+      await axios.post('/api/coffee/attend/check', {}, {
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+  }
+});
       setRecentMenus((prev) => {
         const updated = [menu, ...prev.filter((m) => m !== menu)];
         localStorage.setItem('recentMenus', JSON.stringify(updated.slice(0, 5)));

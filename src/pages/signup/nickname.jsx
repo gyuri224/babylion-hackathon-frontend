@@ -55,10 +55,11 @@ function NameInputPage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/signup', {
-        id,
-        password,
-        name,
+      const response = await axios.post('http://localhost:8080/api/coffee/signup', {
+        email: id,
+        password: password,
+        confirmPassword: password,
+        nickname: name,
       });
 
       if (response.status === 200) {

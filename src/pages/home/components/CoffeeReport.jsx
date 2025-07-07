@@ -35,46 +35,51 @@ const CoffeeReport = () => {
   const [isLessThanLastMonth, setIsLessThanLastMonth] = useState(null);
 
   useEffect(() => {
-    const fetchUserAndTopCoffeeAndAverage = async () => {
-      try {
-        // 로그인
-        const loginRes = await axios.post('/api/coffee/login', {
-          email: 'test123@gmail.com',
-          password: 'test123!'
-        });
-        const { token, nickname } = loginRes.data;
-        setNickname(nickname);
-        localStorage.setItem('token', token);
-        // 최다 커피 메뉴
-        const topCoffeeRes = await axios.get('/api/coffee/top-coffee', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setTopCoffee(topCoffeeRes.data.topCoffee);
-        // 한 달 평균 잔수
-        const avgRes = await axios.get('/api/coffee/average', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setAvgCount(avgRes.data.average || '0');
-        // 카페라떼 총 누적 잔수
-        const latteRes = await axios.get('/api/coffee/total-latte', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setLatteCount(latteRes.data.totalLatte || '0');
-        // 저번달과 커피잔 수 비교
-        const compareRes = await axios.get('/api/coffee/compare-last-month', {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        setIsLessThanLastMonth(compareRes.data.lessThanLastMonth);
-      } catch (err) {
-        setNickname('사용자');
-        setTopCoffee('아메리카노');
-        setAvgCount('0');
-        setLatteCount('0');
-        setIsLessThanLastMonth(null);
-      }
-    };
-    fetchUserAndTopCoffeeAndAverage();
-  }, []);
+  const fetchUserAndTopCoffeeAndAverage = async () => {
+    try {
+      const token = localStorage.getItem('accessToken');
+
+      // 사용자 정보 (닉네임)
+      const userRes = await axios.get('/api/coffee/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setNickname(userRes.data.nickname);
+
+      // 최다 커피 메뉴
+      const topCoffeeRes = await axios.get('/api/coffee/top-coffee', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTopCoffee(topCoffeeRes.data.topCoffee);
+
+      // 한 달 평균 잔수
+      const avgRes = await axios.get('/api/coffee/average', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setAvgCount(avgRes.data.average || '0');
+
+      // 카페라떼 총 누적 잔수
+      const latteRes = await axios.get('/api/coffee/total-latte', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setLatteCount(latteRes.data.totalLatte || '0');
+
+      // 저번달과 커피잔 수 비교
+      const compareRes = await axios.get('/api/coffee/compare-last-month', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setIsLessThanLastMonth(compareRes.data.lessThanLastMonth);
+    } catch (err) {
+      console.error('리포트 데이터 로딩 실패:', err);
+      setNickname('사용자');
+      setTopCoffee('아메리카노');
+      setAvgCount('0');
+      setLatteCount('0');
+      setIsLessThanLastMonth(null);
+    }
+  };
+
+  fetchUserAndTopCoffeeAndAverage();
+}, []);
 
   const reports = [
     { id: 1, title: `${nickname ? `${nickname}님은` : ''}`, subtitle: `주로 ${topCoffee ? `'${topCoffee}'` : ''}를 마셔요` },

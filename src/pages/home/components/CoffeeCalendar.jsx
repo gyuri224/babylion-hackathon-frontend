@@ -35,12 +35,16 @@ const CoffeeCalendar = () => {
       try {
         const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
         const endDate = `${year}-${String(month).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
+        const token = localStorage.getItem("accessToken"); // JWT 토큰 가져오기
         const res = await axios.get('/api/coffee/heatmap', {
           params: {
             startDate,
             endDate,
           },
-        });
+          headers: {
+            Authorization: `Bearer ${token}`, // ✅ 헤더에 토큰 추가
+        },
+      });
         const apiData = res.data;
         const mapped = {};
         Object.entries(apiData).forEach(([dateStr, count]) => {

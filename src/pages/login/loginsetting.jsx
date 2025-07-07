@@ -18,28 +18,33 @@ function LoginSetting() {
   const isLoginEnabled = id.trim() !== '' && password.trim() !== '';
 
   const handleLogin = async () => {
-    if (!isLoginEnabled) return;
+  if (!isLoginEnabled) return;
 
-    try {
-      const response = await axios.post('http://localhost:8080/login', {
-        id,
-        password,
-      });
+  try {
+    const response = await axios.post('http://localhost:8080/api/coffee/login', {
+      email: id,
+      password,
+    });
 
-      if (response.status === 200) {
-        navigate('/home');
-      } else {
-        alert('로그인 실패: 서버 응답이 올바르지 않습니다.');
-      }
-    } catch (error) {
-      console.error('로그인 실패:', error);
-      if (error.response && error.response.status === 401) {
-        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-      } else {
-        alert('서버 오류가 발생했습니다.');
-      }
+    const token = response.data.token;
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      navigate('/home');
+    } else {
+      alert('로그인 실패: 토큰이 존재하지 않습니다.');
     }
-  };
+
+  } catch (error) {
+    console.error('로그인 실패:', error);
+    if (error.response && error.response.status === 401) {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+    } else {
+      alert('서버 오류가 발생했습니다.');
+    }
+  }
+};
+
 
   // 아이콘 겹치기용 스타일
   const wrapperStyle = {
