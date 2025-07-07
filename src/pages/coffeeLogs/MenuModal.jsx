@@ -5,7 +5,6 @@ import { typography } from '../../styles/typography';
 import SliderContainer from '../../components/SliderContainer';
 import MainButton from '../../components/MainButton';
 
-// Helper: filter recentMenus to last 7 days, unique, max 3
 function getRecentMenus(recentMenus) {
   const now = new Date();
   // recentMenus: [{ name, date }, ...] 형태를 가정
@@ -26,6 +25,8 @@ const MenuModal = ({ show, setShow, menu, onSelect, recentMenus, menuOptions }) 
   if (!show) return null;
   // recentMenus는 [{ name, date }, ...] 형태여야 함
   const recentToShow = getRecentMenus(recentMenus);
+  const etcMenus = menuOptions.filter(item => item === "안마심" || item === "기타");
+  const normalMenus = menuOptions.filter(item => item !== "안마심" && item !== "기타");
   return (
     <SliderContainer onClick={() => setShow(false)}>
         <ModalHeader>
@@ -33,82 +34,99 @@ const MenuModal = ({ show, setShow, menu, onSelect, recentMenus, menuOptions }) 
           <CloseButton onClick={() => setShow(false)}>✕</CloseButton>
         </ModalHeader>
         <Divider style={{ margin: '12px 0 8px 0' }} />
-        {recentToShow.length > 0 && (
-          <>
-            <RecentLabel>최근 선택</RecentLabel>
-            <RecentRow>
-              {recentToShow.map((m) => (
-                <MenuButton key={m.name} selected={menu === m.name} onClick={() => onSelect(m.name)}>{m.name}</MenuButton>
-              ))}
-            </RecentRow>
-            <Divider style={{ margin: '12px 0 8px 0' }} />
-          </>
-        )}
+        <RecentLabel>최근 선택</RecentLabel>
+        <RecentRow>
+          {recentToShow.map((m) => (
+            <MenuButton key={m.name} selected={menu === m.name} onClick={() => onSelect(m.name)}>{m.name}</MenuButton>
+          ))}
+        </RecentRow>
+        <Divider style={{ margin: '12px 0 8px 0' }} />
         <MenuGrid>
-          {menuOptions.map((item) => (
+          {normalMenus.map((item) => (
             <MenuButton
               key={item}
               type="button"
               selected={menu === item}
               onClick={() => onSelect(item)}
-              style={
-                (item === "안마심" || item === "기타")
-                  ? { marginTop: "12px" }
-                  : undefined
-              }
             >
               {item}
             </MenuButton>
           ))}
         </MenuGrid>
-        <MainButton style={{ margin: '28px auto 24px auto', display: 'block' }} onClick={() => setShow(false)}>
-          완료
-        </MainButton>
+        {etcMenus.length > 0 && (
+          <EtcRow>
+            {etcMenus.map((item) => (
+              <MenuButton
+                key={item}
+                type="button"
+                selected={menu === item}
+                onClick={() => onSelect(item)}
+              >
+                {item}
+              </MenuButton>
+            ))}
+          </EtcRow>
+        )}
+
+        <BottomButtonWrapper>
+          <MainButton onClick={() => setShow(false)}>완료</MainButton>
+        </BottomButtonWrapper>
+
     </SliderContainer>
   );
 };
 
 export default MenuModal;
 
-const ModalContainer = styled.div`
+const Overlay = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
   width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.25);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+`;
+
+const Sheet = styled.div`
+  width: 100%;
   max-width: 400px;
   min-width: 320px;
-  height: 80vh;
-  margin: 0 auto;
-  background-color: ${colors.white};
+  margin: 0 auto 0 auto;
+  background: ${colors.white};
+  border-radius: 32px 32px 0 0;
   box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
-  border-radius: 24px 24px 0 0;
-  padding: 20px 0 0 0;
+  padding-top: 16px;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
   animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   @keyframes slideUp {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
   }
 `;
 
 const ModalHeader = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 0 0 0;
-  margin: 0 0 8px 0;
+  position: relative;
+  margin: 12px 0 12px 0;
+  height: 48px;
 `;
 
 const ModalTitle = styled.h2`
   ${typography.sub_title};
   text-align: center;
-  flex: 1;
-  margin: 0;
+  flex: none;
+  margin: 0 auto;
+  position: absolute;
+  left: 0; right: 0;
+  width: 100%;
+  pointer-events: none;
 `;
 
 const CloseButton = styled.button`
@@ -117,6 +135,10 @@ const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   margin-right: 20px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
 `;
 
 const Divider = styled.hr`
@@ -145,7 +167,7 @@ const MenuGrid = styled.div`
   flex-wrap: wrap;
   gap: 10px 8px;
   padding: 0 20px;
-  margin-top: 10px;
+  margin-top: 26px;
   justify-content: flex-start;
 `;
 
@@ -164,4 +186,19 @@ const MenuButton = styled.button`
   width: auto;
   min-width: 0;
   margin: 0;
+`;
+
+const BottomButtonWrapper = styled.div`
+  margin-top: 28px;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const EtcRow = styled.div`
+  display: flex;
+  gap: 8px;
+  padding: 0 20px;
+  margin-top: 28px; 
 `; 

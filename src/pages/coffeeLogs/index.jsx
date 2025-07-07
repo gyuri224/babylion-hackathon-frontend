@@ -140,9 +140,11 @@ const CoffeeLogPage = () => {
           />
         </Form>
       </ContentWrapper>
-      <BottomButtonWrapper>
-        <MainButton type="submit" form="coffee-log-form">완료</MainButton>
-      </BottomButtonWrapper>
+      {!showMenuList && !showAmountWheel && (
+        <BottomButtonWrapper>
+          <MainButton type="submit" form="coffee-log-form">완료</MainButton>
+        </BottomButtonWrapper>
+      )}
     </PageContainer>
   );
 };

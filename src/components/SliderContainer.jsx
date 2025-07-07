@@ -29,6 +29,7 @@ const Sheet = styled.div`
   width: 100vw;
   max-width: 400px;
   min-width: 320px;
+  max-height: 80vh;
   margin: 0 auto;
   background: ${colors.white};
   border-radius: 32px 32px 0 0;
@@ -36,6 +37,7 @@ const Sheet = styled.div`
   padding-top: 16px;
   position: relative;
   animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
 
   @keyframes slideUp {
     from { transform: translateY(100%); }
