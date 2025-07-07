@@ -28,7 +28,6 @@ const notifications = [
 const NotificationPage = () => {
   return (
     <PageContainer>
-      <Wrapper>
         <HeaderBar title="알림" />
         <List>
           {notifications.map((item) => (
@@ -42,18 +41,11 @@ const NotificationPage = () => {
             </NotificationCard>
           ))}
         </List>
-      </Wrapper>
     </PageContainer>
   );
 };
 
 export default NotificationPage;
-
-const Wrapper = styled.div`
-  padding: 24px 20px;
-  background-color: ${colors.white};
-  min-height: 100vh;
-`;
 
 const Title = styled.div`
   font-size: 20px;

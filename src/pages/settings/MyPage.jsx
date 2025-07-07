@@ -13,7 +13,7 @@ const SettingsPage = () => {
   const navigate = useNavigate();
   return (
     <PageContainer>
-      <Wrapper>
+   
       <HeaderBar title="마이페이지" />
       <ProfileCard>
         <ProfileRow>
@@ -73,17 +73,12 @@ const SettingsPage = () => {
         <Label>기프트샵 이용약관</Label>
         <IoChevronForward size={20} />
       </SettingItem>
-    </Wrapper>
+    
   </PageContainer>
 );
 };
 
 export default SettingsPage;
-
-const Wrapper = styled.div`
-  padding: 24px 20px;
-  background-color: ${colors.white};
-`;
 
 const SectionTitle = styled.div`
   margin: 16px 0 8px;
