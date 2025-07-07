@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import colors from '../../../styles/colors';
 import { typography } from '../../../styles/typography';
@@ -7,30 +7,83 @@ import { Icon } from '@iconify/react';
 import frame359 from '../../../assets/reportGraphic/Frame 359.png';
 import frame370 from '../../../assets/reportGraphic/Frame 370.png';
 import chatgptImage from '../../../assets/reportGraphic/ChatGPT Image 2025년 7월 5일 오후 11_29_24 1.png';
-
-const reports = [
-  { id: 1, title: '한 달 평균', subtitle: '32잔의 커피를 마셨어요' },
-  { id: 2, title: '주말보다 평일에', subtitle: '커피를 더 1잔 마셔요' },
-  { id: 3, title: '아침 9시에', subtitle: '가장 많이 마셨어요' },
-  { id: 4, title: '화요일에', subtitle: '커피 비중이 가장 높아요' },
-  { id: 5, title: '이번 달 목표', subtitle: '40잔 채워보기!' },
-];
+import report03 from '../../../assets/reportGraphic/Report03.png';
+import axios from 'axios';
 
 const CARD_HEIGHT = 254;
 const CARD_WIDTH = 172;
 const GAP = 16;
+const CARD_COUNT = 5;
 
 const reportImages = {
-  1: frame359,
-  2: frame370,
-  3: chatgptImage,
+  1: frame370,
+  2: chatgptImage,
+  3: frame359,
+  4: report03,
 };
 
 const CoffeeReport = () => {
   const sliderRef = useRef(null);
   const [scrollX, setScrollX] = useState(0);
-  const totalWidth = reports.length * (CARD_HEIGHT + GAP) - GAP;
   const navigate = useNavigate();
+
+  // nickname, topCoffee, avgCount, latteCount, compareLastMonth 상태 추가
+  const [nickname, setNickname] = useState('');
+  const [topCoffee, setTopCoffee] = useState('');
+  const [avgCount, setAvgCount] = useState('');
+  const [latteCount, setLatteCount] = useState('');
+  const [isLessThanLastMonth, setIsLessThanLastMonth] = useState(null);
+
+  useEffect(() => {
+    const fetchUserAndTopCoffeeAndAverage = async () => {
+      try {
+        // 로그인
+        const loginRes = await axios.post('/api/coffee/login', {
+          email: 'test123@gmail.com',
+          password: 'test123!'
+        });
+        const { token, nickname } = loginRes.data;
+        setNickname(nickname);
+        localStorage.setItem('token', token);
+        // 최다 커피 메뉴
+        const topCoffeeRes = await axios.get('/api/coffee/top-coffee', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setTopCoffee(topCoffeeRes.data.topCoffee);
+        // 한 달 평균 잔수
+        const avgRes = await axios.get('/api/coffee/average', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setAvgCount(avgRes.data.average || '0');
+        // 카페라떼 총 누적 잔수
+        const latteRes = await axios.get('/api/coffee/total-latte', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setLatteCount(latteRes.data.totalLatte || '0');
+        // 저번달과 커피잔 수 비교
+        const compareRes = await axios.get('/api/coffee/compare-last-month', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setIsLessThanLastMonth(compareRes.data.lessThanLastMonth);
+      } catch (err) {
+        setNickname('사용자');
+        setTopCoffee('아메리카노');
+        setAvgCount('0');
+        setLatteCount('0');
+        setIsLessThanLastMonth(null);
+      }
+    };
+    fetchUserAndTopCoffeeAndAverage();
+  }, []);
+
+  const reports = [
+    { id: 1, title: `${nickname ? `${nickname}님은` : ''}`, subtitle: `주로 ${topCoffee ? `'${topCoffee}'` : ''}를 마셔요` },
+    { id: 2, title: '한 달 평균', subtitle: `${avgCount}잔의 커피를 마셔요` },
+    { id: 3, title: '지금까지 카페라떼를', subtitle: `총 ${latteCount}잔 마셨어요` },
+    { id: 4, title: '저번달보다 커피잔', subtitle: isLessThanLastMonth === null ? '' : isLessThanLastMonth ? '수가 줄었어요' : '수가 늘었어요' },
+  ];
+
+  const totalWidth = reports.length * (CARD_HEIGHT + GAP) - GAP;
 
   const handleScroll = () => {
     setScrollX(sliderRef.current.scrollLeft);
@@ -169,7 +222,7 @@ const IndicatorTrack = styled.div`
 `;
 
 const IndicatorBar = styled.div`
-  width: ${CARD_WIDTH / reports.length}px;
+  width: ${CARD_WIDTH / CARD_COUNT}px;
   height: 100%;
   background-color: ${colors.main};
   transition: transform 0.2s ease-out;

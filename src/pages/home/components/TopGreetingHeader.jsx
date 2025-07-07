@@ -1,23 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 import { IoNotificationsOutline } from 'react-icons/io5';
 import { Me } from '@icon-park/react';
 import colors from '../../../styles/colors';
-import {typography} from '../../../styles/typography';
-import PageContainer from '../../../components/PageContainer';
+import { typography } from '../../../styles/typography';
 
-const TopGreetingHeader = ({ nickname = '김나리', savedAmount = 500000 }) => {
+const TopGreetingHeader = () => {
+  const [nickname, setNickname] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const loginAndGetNickname = async () => {
+      try {
+        const res = await axios.post('/api/coffee/login', {
+          email: 'test123@gmail.com',
+          password: 'test123!',
+        });
+
+        const { token, nickname } = res.data;
+        localStorage.setItem('token', token);
+        setNickname(nickname);
+      } catch (err) {
+        console.error('로그인 실패:', err);
+        setNickname('사용자');
+      }
+    };
+
+    loginAndGetNickname();
+  }, []);
 
   const handleNotificationClick = () => {
     navigate('/settings/NotificationPage');
   };
+
   const handleMyPageClick = () => {
     navigate('/settings/MyPage');
   };
+
   return (
-   
     <HeaderWrapper>
       <TextBox>
         <HelloText>{nickname}님 안녕하세요!</HelloText>
@@ -31,11 +53,11 @@ const TopGreetingHeader = ({ nickname = '김나리', savedAmount = 500000 }) => 
         </div>
       </IconBox>
     </HeaderWrapper>
-
   );
 };
 
 export default TopGreetingHeader;
+
 const HeaderWrapper = styled.div`
   width: 90%;
   display: flex;
