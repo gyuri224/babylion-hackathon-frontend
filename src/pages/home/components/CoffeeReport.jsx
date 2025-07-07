@@ -189,4 +189,7 @@ const PastButton = styled.button`
   color: ${colors.black_sub};
   ${typography.caption};
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 `;
