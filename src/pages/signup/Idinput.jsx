@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignupInput from '../../components/signupinput';
-import Header1 from '../../components/Header';
+import HeaderBars from '../../components/HeaderBarj';
 import MainButton from '../../components/MainButton';
 import styled from 'styled-components';
 import Phone from '../../components/Phone';
@@ -10,7 +10,7 @@ import { MdClose } from 'react-icons/md';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-
+import HeaderBar from '../../components/HeaderBar';
 function InputIdpage() {
   const [id, setId] = useState('');
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function InputIdpage() {
   const handlePassword = async () => {
     // 1. 이메일 중복 확인 (형식과 무관하게 항상 먼저)
     let exists = false;
-    try {
+ try {
       const response = await axios.post('/api/coffee/check-email', {
         email: id,
       });
@@ -52,17 +52,18 @@ function InputIdpage() {
 
   return (
     <Phone>
-      <Header1 title="회원가입" />
+      <HeaderBars title="회원가입" />
       <InputWrapper>
         <SignupInput
           label="아이디"
           placeholder="아이디(이메일)을 입력해주세요"
           value={id}
           onChange={(e) => setId(e.target.value)}
+        style={{marginLeft:'4px'}}
         />
         {id && (
           <ClearButton onClick={() => setId('')}>
-            <MdClose size={20} color="#888" />
+            <MdClose size={20} color="#AEAEAE" />
           </ClearButton>
         )}
       </InputWrapper>
@@ -72,7 +73,7 @@ function InputIdpage() {
         disabled={!id.trim()}
         style={{
           marginLeft: '10px',
-          marginTop: '470px',
+          marginTop: '380px',
           backgroundColor: id.trim() ? '#FF9223' : '#FF92234D',
           color: 'white',
           height: '48px',

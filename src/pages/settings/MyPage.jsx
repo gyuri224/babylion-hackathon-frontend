@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { IoChevronForward } from 'react-icons/io5';
 import colors from '../../styles/colors';
@@ -8,33 +8,12 @@ import { Icon } from '@iconify/react';
 import { typography } from '../../styles/typography';
 import HeaderBar from '../../components/HeaderBar';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
-  const [nickname, setNickname] = useState('사용자');
-
-  useEffect(() => {
-    const loginAndGetNickname = async () => {
-      try {
-        const res = await axios.post('/api/coffee/login', {
-          email: 'test123@gmail.com',
-          password: 'test123!',
-        });
-        const { token, nickname } = res.data;
-        localStorage.setItem('token', token);
-        setNickname(nickname);
-      } catch (err) {
-        console.error('로그인 실패:', err);
-        setNickname('사용자');
-      }
-    };
-
-    loginAndGetNickname();
-  }, []);
-
   return (
     <PageContainer>
+   
       <HeaderBar title="마이페이지" />
       <ProfileCard>
         <ProfileRow>
@@ -42,7 +21,7 @@ const SettingsPage = () => {
             <Icon icon="mdi:account-circle" width={56} height={56} color={colors.main} />
           </ProfileImage>
           <ProfileInfo>
-            <Nickname>{nickname}님</Nickname>
+            <Nickname>김나리님</Nickname>
             <EditButton>
               <Icon icon="tabler:pencil" width={20} height={20} color={colors.black_sub} />
             </EditButton>
@@ -53,7 +32,6 @@ const SettingsPage = () => {
 
       <NavCard>내 기록</NavCard>
       <NavCard onClick={() => navigate('/settings/GifticonPage')}>기프티콘</NavCard>
-
       <SectionTitle>알림</SectionTitle>
       <SettingItem>
         <Label>시스템 알림 설정</Label>
@@ -77,6 +55,7 @@ const SettingsPage = () => {
         <IoChevronForward size={20} />
       </SettingItem>
 
+
       <SectionTitle>약관 및 정책</SectionTitle>
       <SettingItem>
         <Label>이용약관</Label>
@@ -94,8 +73,9 @@ const SettingsPage = () => {
         <Label>기프트샵 이용약관</Label>
         <IoChevronForward size={20} />
       </SettingItem>
-    </PageContainer>
-  );
+    
+  </PageContainer>
+);
 };
 
 export default SettingsPage;
@@ -151,11 +131,17 @@ const ToggleSwitch = styled.input.attrs({ type: 'checkbox' })`
   }
 `;
 
+const Divider = styled.div`
+  height: 12px;
+  background-color: #f4f4f4;
+  margin: 16px 0;
+`;
+
 const ProfileCard = styled.div`
   width: 90%;
   background: #fff;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.25);
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   padding: 24px 20px 12px 20px;
   display: flex;
   flex-direction: column;
@@ -167,7 +153,7 @@ const ProfileRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   justify-content: flex-start;
   margin-bottom: 8px;
@@ -177,9 +163,11 @@ const ProfileImage = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  background: ${colors.sub};
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 12px;
 `;
 
 const ProfileInfo = styled.div`
@@ -213,4 +201,3 @@ const NavCard = styled.div`
   display: flex;
   align-items: center;
 `;
-

@@ -2,28 +2,33 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
+import HeaderBars from '../../components/HeaderBarj';
 
 import Phone from '../../components/Phone';
 import Header1 from '../../components/Header';
 import SignupInput from '../../components/signupinput';
 import MainButton from '../../components/MainButton';
-import { MdClose } from 'react-icons/md';
-
+import { MdClose } from 'react-icons/md'; // X 아이콘 불러오기
+import HeaderBar from '../../components/HeaderBar';
 function NameInputPage() {
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
   const id = location.state?.id || '';
   const password = location.state?.password || '';
 
-  const handleChange = (e) => setName(e.target.value);
-  const clearName = () => setName('');
-  const handleAgeChange = (e) => setAge(e.target.value);
+  const handleChange = (e) => {
+    setName(e.target.value);
+  };
+
+  const clearName = () => {
+    setName('');
+  };
 
   const isValidName = () => {
     if (!name) return false;
+
     const specialChars = '._-';
     const filtered = name.split('').filter(c =>
       /[가-힣a-zA-Z0-9]/.test(c) || specialChars.includes(c)
@@ -44,49 +49,41 @@ function NameInputPage() {
     return false;
   };
 
-  const isValidAge = () => {
-    const num = Number(age);
-    return age !== '' && !isNaN(num) && num > 0 && num < 150;
-  };
-
   const handleNext = async () => {
     if (!isValidName()) {
       alert('별명을 올바르게 입력해주세요.');
       return;
     }
-    if (!isValidAge()) {
-      alert('나이를 올바르게 입력해주세요.');
-      return;
+  try {
+    const response = await axios.post('/api/coffee/signup', {
+      email: id,
+      password,
+    });
+
+    const token = response.data.token;
+    if (token) {
+      localStorage.setItem("accessToken", token);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      navigate('/home');
+    } else {
+      alert('로그인 실패: 토큰이 존재하지 않습니다.');
     }
 
-    try {
-      const response = await axios.post('/api/coffee/signup', {
-        email: id,
-        password: password,
-        nickname: name,
-        age: Number(age),
-      });
-
-      if (response.status === 200) {
-        navigate('/con', { state: { id, password, name } });
-      } else {
-        alert(response.data.message || '회원가입에 실패했습니다.');
-      }
-    } catch (error) {
-      console.error('회원가입 요청 실패:', error);
-      if (error.response && error.response.data) {
-        alert(error.response.data.message || '회원가입에 실패했습니다.');
-      } else {
-        alert('서버와 연결에 실패했습니다.');
-      }
+  } catch (error) {
+    console.error('로그인 실패:', error);
+    if (error.response && error.response.status === 401) {
+      alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+    } else {
+      alert('서버 오류가 발생했습니다.');
     }
-  };
+  }
+};
+
 
   return (
     <Phone>
-      <Header1 title="회원가입" />
+      <HeaderBars title="회원가입" />
 
-      {/* 별명 입력 */}
       <InputWrapper>
         <SignupInput
           label="별명"
@@ -94,29 +91,22 @@ function NameInputPage() {
           value={name}
           onChange={handleChange}
         />
+        {/* 항상 X 버튼을 표시 */}
         <ClearButton onClick={clearName}>
           <MdClose size={20} color={name ? '#888' : '#ccc'} />
         </ClearButton>
-        <Message>국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)</Message>
-      </InputWrapper>
 
-      {/* 나이 입력 */}
-      <InputWrapper>
-        <SignupInput
-          label="나이"
-          placeholder="나이를 숫자로 입력해주세요"
-          value={age}
-          onChange={handleAgeChange}
-          type="number"
-        />
+        <Message style={{ marginLeft: '16px' }}>
+          국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)
+        </Message>
       </InputWrapper>
 
       <MainButton
         onClick={handleNext}
-        disabled={!isValidName() || !isValidAge()}
+        disabled={!isValidName()}
         style={{
-          backgroundColor: isValidName() && isValidAge() ? '#ff9223' : '#ffbb76',
-          marginTop: '360px',
+          backgroundColor: isValidName() ? '#ff9223' : '#ffbb76',
+          marginTop: '343px',
           marginLeft: '9px',
           color: 'white',
         }}
@@ -129,16 +119,16 @@ function NameInputPage() {
 
 export default NameInputPage;
 
+// 스타일 정의
 const InputWrapper = styled.div`
   position: relative;
-  margin-bottom: 20px;
 `;
 
 const Message = styled.p`
   font-size: 12px;
   color: #888;
   margin-top: 4px;
-  margin-left: 16px;
+  margin-left: 2px;
 `;
 
 const ClearButton = styled.button`

@@ -5,15 +5,21 @@ import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
 import Phone from '../../components/Phone';
 import MainButton from '../../components/MainButton';
-import Header1 from '../../components/Header';
 import SignupInput from '../../components/signupinput';
 import axios from 'axios';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import HeaderBar from '../../components/HeaderBar';
+import HeaderBars from '../../components/HeaderBarj';
+import { ToastContainer } from 'react-toastify';
+import { Slide } from 'react-toastify';
 
 function LoginSetting() {
   const [id, setId] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+
 
   const isLoginEnabled = id.trim() !== '' && password.trim() !== '';
 
@@ -22,7 +28,7 @@ function LoginSetting() {
 
     try {
       const response = await axios.post('/api/coffee/login', {
-        email: id,
+        id,
         password,
       });
 
@@ -41,7 +47,7 @@ function LoginSetting() {
     }
   };
 
-  // 아이콘 겹치기용 스타일
+
   const wrapperStyle = {
     position: 'relative',
     marginBottom: '30px',
@@ -50,7 +56,7 @@ function LoginSetting() {
 const iconButtonStyle = {
   position: 'absolute',
   right: '12px',
-  top: '80%', // ✅ 기존 50% → 60%로 내림 (더 아래로 내려감)
+  top: '80%', 
   transform: 'translateY(-50%)',
   background: 'none',
   border: 'none',
@@ -61,9 +67,8 @@ const iconButtonStyle = {
 
   return (
     <Phone>
-      <Header1 title="로그인" />
+      <HeaderBars title="로그인" />
 
-      {/* 아이디 입력창 + X 버튼 */}
       <div style={wrapperStyle}>
         <SignupInput
           label="아이디"
@@ -76,8 +81,8 @@ const iconButtonStyle = {
         </button>
       </div>
 
-      {/* 비밀번호 입력창 + 눈 아이콘 */}
       <div style={wrapperStyle}>
+        
         <SignupInput
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요"
@@ -89,24 +94,39 @@ const iconButtonStyle = {
           onClick={() => setShowPassword(!showPassword)}
           style={iconButtonStyle}
         >
-          {showPassword ? <IoEyeOff size={20} /> : <IoEye size={20} />}
+          {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
         </button>
-      </div>
+        </div>
+    
 
-      {/* 로그인 버튼 */}
       <MainButton
         onClick={handleLogin}
         disabled={!isLoginEnabled}
         style={{
-          backgroundColor: isLoginEnabled ? '#ff6200' : '#ffbb76',
-          color: '#fff',
+          backgroundColor: isLoginEnabled ? '#FF9223' : '#FF92234D',
+          color: '#FCFCFC',
           cursor: isLoginEnabled ? 'pointer' : 'not-allowed',
-          marginTop: '300px',
+          marginLeft:'9px',
+          marginTop:'240px'
         }}
       >
         로그인
       </MainButton>
+      <ToastContainer
+position="bottom-center"
+autoClose={2000}
+hideProgressBar
+newestOnTop={false}
+closeOnClick={false}
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="colored"
+transition={Slide}
+/>
     </Phone>
+
   );
 }
 
