@@ -21,7 +21,7 @@ function LoginSetting() {
     if (!isLoginEnabled) return;
 
     try {
-      const response = await axios.post('http://localhost:4000/login', {
+      const response = await axios.post('http://localhost:8080/login', {
         id,
         password,
       });

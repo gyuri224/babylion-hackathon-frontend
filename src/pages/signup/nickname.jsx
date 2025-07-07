@@ -55,7 +55,7 @@ function NameInputPage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:4000/signup', {
+      const response = await axios.post('http://localhost:8080/signup', {
         id,
         password,
         name,
