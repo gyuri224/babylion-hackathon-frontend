@@ -22,10 +22,11 @@ import FirstSplash from './pages/splash/firstsplash';
 import SecondSplash from './pages/splash/secondsplash';
 import LastSplash from './pages/splash/lastsplash';
 
-// ❗ 아래 세 컴포넌트는 정의되지 않았으므로 주석 처리 (필요시 경로 알려주세요)
-// import AttendanceStampPage from './pages/attendance/AttendanceStampPage';
-// import GifticonPage from './pages/settings/GifticonPage';
-// import MyGiftIcons from './pages/settings/MyGiftIcons';
+
+import AttendanceStampPage from './pages/attendanceStamp';
+
+import GifticonPage from './pages/settings/GifticonPage';
+import MyGiftIcons from './pages/settings/MyGiftIcons';
 
 const App = () => {
   return (
@@ -35,14 +36,14 @@ const App = () => {
         <Route path="/settings/NotificationPage" element={<NotificationPage />} />
         <Route path="/settings/MyPage" element={<MyPage />} />
         <Route path="/coffee-log" element={<CoffeeLogPage />} />
+        <Route path="/coffeeLogs/index" element={<CoffeeLogPage />} />
         <Route path="/log-complete" element={<LogCompletePage />} />
         <Route path="/lastCoffeeRecords" element={<LastCoffeeRecords />} />
         <Route path="/lastCoffeeReports" element={<LastCoffeeReports />} />
 
-        {/* ❗ 해당 컴포넌트가 정의되지 않아 주석 처리 */}
-        {/* <Route path="/attendance-stamp" element={<AttendanceStampPage />} /> */}
-        {/* <Route path="/settings/GifticonPage" element={<GifticonPage />} /> */}
-        {/* <Route path="/settings/MyGiftIcons" element={<MyGiftIcons />} /> */}
+        <Route path="/attendance-stamp" element={<AttendanceStampPage />} /> 
+        <Route path="/settings/GifticonPage" element={<GifticonPage />} /> 
+        <Route path="/settings/MyGiftIcons" element={<MyGiftIcons />} /> 
 
         <Route path="/" element={<Logo />} />
         <Route path="/first" element={<FirstSplash />} />

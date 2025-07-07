@@ -32,14 +32,16 @@ const CoffeeLogPage = () => {
   const amountOptions = Array.from({ length: 10 }, (_, i) => String(i));
 
   useEffect(() => {
-    localStorage.setItem('recentMenus', JSON.stringify(recentMenus));
-  }, [recentMenus]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem('recentMenus');
-    if (saved) {
-      setRecentMenus(JSON.parse(saved));
-    }
+    // 최근 선택 메뉴를 서버에서 불러오기
+    axios.get('/api/coffee/recent-coffee')
+      .then(res => {
+        setRecentMenus(res.data);
+      })
+      .catch(() => {
+        // fallback: localStorage 사용 (이전 방식)
+        const saved = localStorage.getItem('recentMenus');
+        if (saved) setRecentMenus(JSON.parse(saved));
+      });
   }, []);
 
   const handleDateChange = (name, value) => {
@@ -57,6 +59,8 @@ const CoffeeLogPage = () => {
     };
     try {
       await axios.post('/api/coffee/record', body);
+      // 출석 체크 API 호출
+      await axios.post('/api/coffee/attend/check');
       setRecentMenus((prev) => {
         const updated = [menu, ...prev.filter((m) => m !== menu)];
         localStorage.setItem('recentMenus', JSON.stringify(updated.slice(0, 5)));

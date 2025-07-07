@@ -1,25 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import colors from '../../../styles/colors';
-import { typography } from '../../../styles/typography';
+import colors from '../../styles/colors';
+import { typography } from '../../styles/typography';
 import axios from 'axios'; 
 
-const coffeeColors = {
-  4: '#FF6200',
-  3: '#FF9223',
-  2: '#FFBB76',
-  1: '#FFEDDB',
-  0: 'transparent',
-};
-
 const CoffeeCalendar = () => {
-  const [showAll, setShowAll] = useState(false);
-  const [coffeeData, setCoffeeData] = useState({});
+  const [attendedDays, setAttendedDays] = useState([]);
   const today = new Date();
   const month = today.getMonth() + 1;
   const year = today.getFullYear();
-
-  const isToday = (date) => today.getDate() === date;
 
   const days = ['일', '월', '화', '수', '목', '금', '토'];
   const firstDay = new Date(year, month - 1, 1).getDay();
@@ -28,34 +17,19 @@ const CoffeeCalendar = () => {
   const fullCalendar = Array.from({ length: firstDay + daysInMonth }, (_, i) =>
     i < firstDay ? null : i - firstDay + 1
   );
-  const displayedDays = showAll ? fullCalendar : fullCalendar.slice(-7);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchAttend = async () => {
       try {
-        const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
-        const endDate = `${year}-${String(month).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
-        const res = await axios.get('/api/coffee/heatmap', {
-          params: {
-            startDate,
-            endDate,
-          },
+        const res = await axios.get('/api/coffee/attend/calendar', {
+          params: { month: `${year}-${String(month).padStart(2, '0')}` },
         });
-        const apiData = res.data;
-        const mapped = {};
-        Object.entries(apiData).forEach(([dateStr, count]) => {
-          const dateObj = new Date(dateStr);
-          if (dateObj.getMonth() + 1 === month) {
-            mapped[dateObj.getDate()] = count;
-          }
-        });
-        setCoffeeData(mapped);
+        setAttendedDays(res.data.attendedDays || []);
       } catch (err) {
-        console.error('커피 소비량 API 호출 실패:', err);
+        console.error('출석 체크 달력 API 호출 실패:', err);
       }
     };
-
-    fetchData();
+    fetchAttend();
   }, [month, year]);
 
   return (
@@ -67,26 +41,19 @@ const CoffeeCalendar = () => {
           <WeekDay key={day}>{day}</WeekDay>
         ))}
 
-        {displayedDays.map((date, idx) => {
+        {fullCalendar.map((date, idx) => {
           if (!date) return <div key={`empty-${idx}`} />;
-          const count = coffeeData[date] ?? 0;
-          const isTodayDate = isToday(date);
-
+          const isAttended = attendedDays.includes(date);
           return (
             <DateCircle
               key={date}
-              $bg={coffeeColors[count]}
-              $isToday={isTodayDate}
+              $attended={isAttended}
             >
               <DateText>{date}</DateText>
             </DateCircle>
           );
         })}
       </CalendarGrid>
-
-      <ToggleButton onClick={() => setShowAll(!showAll)}>
-        {showAll ? '요약 보기' : '모두 보기'}
-      </ToggleButton>
     </Wrapper>
   );
 };
@@ -129,10 +96,10 @@ const WeekDay = styled.div`
 `;
 
 const DateCircle = styled.div`
-  background-color: ${({ $bg }) => $bg};
+  background-color: ${({ $attended }) => ($attended ? colors.main : 'transparent')};
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,15 +111,4 @@ const DateText = styled.span`
   font-size: 14px;
   font-weight: 600;
   color: ${colors.black};
-`;
-
-const ToggleButton = styled.button`
-  background-color: transparent;
-  border: 2px solid ${colors.main};
-  border-radius: 4px;
-  padding: 3px 130px;
-  color: ${colors.main};
-  font-weight: 600;
-  cursor: pointer;
-  ${typography.des};
 `;

@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import HeaderBar from '../../components/HeaderBar';
-import CoffeeCalendar from '../home/components/CoffeeCalendar';
+import StampCalendar from './StampCalendar';
+
 import MainButton from '../../components/MainButton';
 import { typography } from '../../styles/typography';
 import colors from '../../styles/colors';
@@ -16,8 +17,11 @@ const AttendanceStampPage = () => {
         <Highlight>5개</Highlight> 남았어요
       </InfoText>
       <CalendarWrapper>
-        <CoffeeCalendar />
+        <StampCalendar />
       </CalendarWrapper>
+      <SubButtonWrapper>
+        <CompleteButton disabled>한 달 출석 도장 완료</CompleteButton>
+      </SubButtonWrapper>
       <ButtonWrapper>
         <MainButton>기록하고 출석하기</MainButton>
       </ButtonWrapper>
@@ -51,7 +55,30 @@ const ButtonWrapper = styled.div`
   margin-top: 24px;
 `;
 
+const SubButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  text-align: left;
+  margin-top: 24px;
+`;
+
 const Title = styled.h1`
   color: ${colors.black};
   ${typography.des};
+`;
+
+const CompleteButton = styled(MainButton)`
+  background: ${colors.white};
+  color: ${colors.black};
+  ${typography.des};
+  text-align: left;
+  margin-bottom: 12px;
+  cursor: not-allowed;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+              0 -2px 6px rgba(0, 0, 0, 0.05);
+
+  display: block;
+  justify-content: flex-start;
+  align-items: flex-start;            
 `;

@@ -24,7 +24,7 @@ function PasswordCheck() {
  
   // 항상 다음 페이지(/name)로 id, password 전달
   const handleNext = () => {
-    navigate('/api/coffeelsignup', { state: { id, password } });
+    navigate('/api/coffee/signup', { state: { id, password } });
   };
 
   return (

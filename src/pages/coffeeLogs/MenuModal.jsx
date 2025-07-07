@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
 import { typography } from '../../styles/typography';
 import SliderContainer from '../../components/SliderContainer';
 import MainButton from '../../components/MainButton';
+import axios from 'axios';
 
 function getRecentMenus(recentMenus) {
   const now = new Date();
@@ -13,7 +14,7 @@ function getRecentMenus(recentMenus) {
     const diff = (now - new Date(m.date)) / (1000 * 60 * 60 * 24);
     return diff <= 7;
   });
-  // 중복 제거 (name 기준)
+  // 중복 제거
   const unique = [];
   filtered.forEach(m => {
     if (!unique.find(u => u.name === m.name)) unique.push(m);
@@ -21,12 +22,24 @@ function getRecentMenus(recentMenus) {
   return unique.slice(0, 3);
 }
 
-const MenuModal = ({ show, setShow, menu, onSelect, recentMenus, menuOptions }) => {
-  if (!show) return null;
-  // recentMenus는 [{ name, date }, ...] 형태여야 함
+const MenuModal = ({ show, setShow, menu, onSelect, menuOptions }) => {
+  const [recentMenus, setRecentMenus] = useState([]);
+
+  useEffect(() => {
+    if (!show) return;
+    axios.get('/api/coffee/recent-coffee')
+      .then(res => {
+        // 응답이 배열이 아닐 수도 있으니 배열로 변환
+        const data = Array.isArray(res.data) ? res.data : [res.data];
+        setRecentMenus(data);
+      })
+      .catch(() => setRecentMenus([]));
+  }, [show]);
+
   const recentToShow = getRecentMenus(recentMenus);
   const etcMenus = menuOptions.filter(item => item === "안마심" || item === "기타");
   const normalMenus = menuOptions.filter(item => item !== "안마심" && item !== "기타");
+  if (!show) return null;
   return (
     <SliderContainer onClick={() => setShow(false)}>
         <ModalHeader>
