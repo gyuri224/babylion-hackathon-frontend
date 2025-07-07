@@ -27,7 +27,7 @@ const SettingsPage = () => {
             </EditButton>
           </ProfileInfo>
         </ProfileRow>
-        <SubButton style={{ marginTop: 24, width: '100%' }}>기록하러 가기</SubButton>
+        <SubButton style={{ width: '100%' }}>기록하러 가기</SubButton>
       </ProfileCard>
 
       <NavCard>내 기록</NavCard>

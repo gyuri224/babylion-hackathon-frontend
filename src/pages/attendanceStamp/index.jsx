@@ -14,6 +14,8 @@ const AttendanceStampPage = () => {
   const [rewardAvailable, setRewardAvailable] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showStampPopup, setShowStampPopup] = useState(false);
+  const [attendedDays, setAttendedDays] = useState([]);
+  const [daysInMonth, setDaysInMonth] = useState(0);
 
   useEffect(() => {
     const fetchAttend = async () => {
@@ -25,12 +27,18 @@ const AttendanceStampPage = () => {
           params: { month: `${year}-${String(month).padStart(2, '0')}` },
         });
         setIsFullAttend(res.data.isFullAttend);
+        setAttendedDays(res.data.attendedDays || []);
+        setDaysInMonth(new Date(year, month, 0).getDate());
       } catch (err) {
         setIsFullAttend(false);
+        setAttendedDays([]);
+        setDaysInMonth(0);
       }
     };
     fetchAttend();
   }, []);
+
+  const remainCount = daysInMonth - attendedDays.length;
 
   const handleFullAttend = async () => {
     if (!isFullAttend || loading) return;
@@ -57,7 +65,7 @@ const AttendanceStampPage = () => {
       <HeaderBar title="출석도장" />
       <InfoText>
         아이스 아메리카노 한 잔까지<br />
-        <Highlight>5개</Highlight> 남았어요
+        <Highlight>{remainCount}개</Highlight> 남았어요
       </InfoText>
       <CalendarWrapper>
         <StampCalendar />
@@ -174,3 +182,4 @@ const PopupOverlay = styled.div`
   justify-content: center;
   z-index: 1000;
 `;
+

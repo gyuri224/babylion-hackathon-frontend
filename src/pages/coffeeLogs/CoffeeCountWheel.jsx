@@ -44,7 +44,7 @@ const WheelPicker = ({ value, onChange, show, setShow, years, months, days }) =>
 export default WheelPicker;
 
 const WheelSheet = styled.div`
-  background: #fff;
+  background: ${colors.white};
   border-radius: 24px;
   padding: 0px 0 0px 0;
   margin: 53px 0 54px 0;
@@ -103,7 +103,7 @@ const LabelsRow = styled.div`
 
 const WheelLabel = styled.div`
   font-size: 14px;
-  color: #AEAEAE;
+  color: ${colors.white};
   text-align: center;
   ${typography.caption};
 `;

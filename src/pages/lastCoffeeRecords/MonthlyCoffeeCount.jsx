@@ -33,7 +33,7 @@ const MonthCoffeeCount = ({ month = '7월' }) => {
         <MonthButtonWrapper>
           <MonthButton>
             <Circle>
-              <Icon icon="tabler:chevron-down" width={24} height={18} color="#0B0700" style={{ strokeWidth: 2, display: 'block' }} />
+              <Icon icon="tabler:chevron-down" width={24} height={24} color="#0B0700" style={{ strokeWidth: 2 }} />
             </Circle>
           </MonthButton>
         </MonthButtonWrapper>
@@ -76,7 +76,11 @@ const MonthLabel = styled.div`
   font-size: 20px;
   font-weight: 700;
   color: ${colors.black};
-  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  height: 24px;
+  line-height: 24px;
+  padding-bottom: 2px;
 `;
 
 const Title = styled.div`
@@ -145,4 +149,5 @@ const Circle = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 0;
 `;

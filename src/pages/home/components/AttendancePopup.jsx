@@ -45,6 +45,7 @@ const PopupContainer = styled.div`
   padding: 32px 24px;
   border-radius: 14px;
   text-align: center;
+  align-items: center;
 `;
 
 const SubTitle = styled.div`
@@ -59,7 +60,7 @@ const Title = styled.div`
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 32px;
-  line-height: 150%;
+  line-height: 120%;
 `;
 
 const Description = styled.div`
