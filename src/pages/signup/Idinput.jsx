@@ -24,7 +24,7 @@ function InputIdpage() {
     // 1. 이메일 중복 확인 (형식과 무관하게 항상 먼저)
     let exists = false;
     try {
-      const response = await axios.post('http://localhost:8080/api/coffee/check-email', {
+      const response = await axios.post('/api/coffee/check-email', {
         email: id,
       });
       exists = response.data.exists;

@@ -60,7 +60,7 @@ function NameInputPage() {
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/api/coffee/signup', {
+      const response = await axios.post('/api/coffee/signup', {
         email: id,
         password: password,
         nickname: name,
