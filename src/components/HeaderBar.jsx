@@ -24,7 +24,8 @@ const Header = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
+  margin-top:21.5px;
+  margin-bottom: 37.5px;
 `;
 
 const BackButton = styled.button`
@@ -32,6 +33,7 @@ const BackButton = styled.button`
   border: none;
   font-size: 20px;
   color: ${colors.black};
+  margin-left: 24px;
 `;
 
 const Title = styled.h1`

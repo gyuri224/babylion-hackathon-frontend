@@ -3,6 +3,7 @@ import img5 from '../../img/image6.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import styled, { createGlobalStyle } from 'styled-components';
+import PageContainer from '../../components/PageContainer';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -24,7 +25,7 @@ function LastSplash() {
 
   return (
     <>
-      <GlobalStyle />
+   
       <PageContainer {...handlers}>
         <ProgressBarWrapper>
           <ProgressBar style={{ width: `${progress}%` }} />
@@ -40,18 +41,6 @@ function LastSplash() {
 }
 
 export default LastSplash;
-
-
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 375px;
-  padding: 0 24px;
-  margin: 0 auto;
-  position: relative;
-  overflow-x: hidden;
-  height: 100vh;
-  background: #fff;
-`;
 
 const ProgressBarWrapper = styled.div`
   width: 90%;
