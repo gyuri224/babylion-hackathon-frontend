@@ -21,8 +21,8 @@ function LoginSetting() {
     if (!isLoginEnabled) return;
 
     try {
-      const response = await axios.post('http://localhost:8080/login', {
-        id,
+      const response = await axios.post('http://localhost:8080/api/coffee/login', {
+        email: id,
         password,
       });
 

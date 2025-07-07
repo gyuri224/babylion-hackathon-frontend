@@ -154,8 +154,8 @@ const ToggleSwitch = styled.input.attrs({ type: 'checkbox' })`
 const ProfileCard = styled.div`
   width: 90%;
   background: #fff;
-  border-radius: 24px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  border-radius: 14px;
+  box-shadow: 0 4px 12px 0 rgba(0,0,0,0.25);
   padding: 24px 20px 12px 20px;
   display: flex;
   flex-direction: column;
@@ -167,7 +167,7 @@ const ProfileRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
   width: 100%;
   justify-content: flex-start;
   margin-bottom: 8px;
@@ -177,11 +177,9 @@ const ProfileImage = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: ${colors.sub};
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
 `;
 
 const ProfileInfo = styled.div`

@@ -213,7 +213,7 @@ const GraphicBox = styled.div`
 `;
 
 const IndicatorTrack = styled.div`
-  width: ${CARD_WIDTH}px;
+  width: 279px;
   height: 6px;
   background-color: #f0f0f0;
   border-radius: 3px;
@@ -222,7 +222,7 @@ const IndicatorTrack = styled.div`
 `;
 
 const IndicatorBar = styled.div`
-  width: ${CARD_WIDTH / CARD_COUNT}px;
+  width: ${279 / 4}px;
   height: 100%;
   background-color: ${colors.main};
   transition: transform 0.2s ease-out;
