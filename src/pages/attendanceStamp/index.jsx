@@ -25,7 +25,7 @@ const AttendanceStampPage = () => {
         const today = new Date();
         const month = today.getMonth() + 1;
         const year = today.getFullYear();
-        const res = await axios.get('/api/coffee/attend/calendar', {
+        const res = await axios.get('https://coffeeloging.duckdns.org/api/coffee/attend/calendar', {
           params: { month: `${year}-${String(month).padStart(2, '0')}` },
         });
         setIsFullAttend(res.data.isFullAttend);
@@ -46,7 +46,7 @@ const AttendanceStampPage = () => {
     if (!isFullAttend || loading) return;
     setLoading(true);
     try {
-      const res = await axios.get('/api/coffee/attend/full-attend-check');
+      const res = await axios.get('https://coffeeloging.duckdns.org/api/coffee/attend/full-attend-check');
       setRewardAvailable(res.data.rewardAvailable);
       if (res.data.rewardAvailable) {
         setShowStampPopup(true);

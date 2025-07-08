@@ -33,7 +33,7 @@ const CoffeeLogPage = () => {
 
   useEffect(() => {
     // 최근 선택 메뉴를 서버에서 불러오기
-    axios.get('/api/coffee/recent-coffee')
+    axios.get('https://coffeeloging.duckdns.org/api/coffee/recent-coffee')
       .then(res => {
         setRecentMenus(res.data);
       })
@@ -58,9 +58,9 @@ const CoffeeLogPage = () => {
       quantity: Number(amount),
     };
     try {
-      await axios.post('/api/coffee/record', body);
+      await axios.post('https://coffeeloging.duckdns.org/api/coffee/record', body);
       // 출석 체크 API 호출
-      await axios.post('/api/coffee/attend/check');
+      await axios.post('https://coffeeloging.duckdns.org/api/coffee/attend/check');
       setRecentMenus((prev) => {
         const updated = [menu, ...prev.filter((m) => m !== menu)];
         localStorage.setItem('recentMenus', JSON.stringify(updated.slice(0, 5)));

@@ -21,7 +21,7 @@ const CoffeeCalendar = () => {
   useEffect(() => {
     const fetchAttend = async () => {
       try {
-        const res = await axios.get('/api/coffee/attend/calendar', {
+        const res = await axios.get('https://coffeeloging.duckdns.org/api/coffee/attend/calendar', {
           params: { month: `${year}-${String(month).padStart(2, '0')}` },
         });
         setAttendedDays(res.data.attendedDays || []);

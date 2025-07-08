@@ -1,4 +1,3 @@
-// src/pages/signup/Idinput.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SignupInput from '../../components/signupinput';
@@ -10,7 +9,7 @@ import { MdClose } from 'react-icons/md';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import HeaderBar from '../../components/HeaderBar';
+
 function InputIdpage() {
   const [id, setId] = useState('');
   const navigate = useNavigate();
@@ -20,52 +19,76 @@ function InputIdpage() {
     return regex.test(email);
   };
 
+  // ✅ 공통 토스트 출력 함수
+  const showToast = (message) => {
+    toast(message, {
+      icon: false,
+      style: {
+        backgroundColor: '#FFEDDB',
+        color: '#FF9223',
+        fontWeight: '400',
+        fontSize: '12px',
+        width: '327px',
+        height: '32px',
+        lineHeight: '150%',
+        fontFamily: "'Pretendard', sans-serif",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+    });
+  };
+
   const handlePassword = async () => {
-    // 1. 이메일 중복 확인 (형식과 무관하게 항상 먼저)
     let exists = false;
- try {
-      const response = await axios.post('/api/coffee/check-email', {
+
+    try {
+      const response = await axios.post(
+      'https://coffeeloging.duckdns.org/api/coffee/check-email', {
         email: id,
       });
       exists = response.data.exists;
     } catch (error) {
-      toast.error('서버 오류: 이메일 확인 실패');
+      showToast('서버 오류: 이메일 확인 실패');
       return;
     }
 
-    // 2. 이미 존재하는 이메일일 경우
     if (exists) {
-      toast.error('이미 존재하는 이메일입니다.');
+      showToast('이미 회원가입된 아이디예요');
       return;
     }
 
-    // 3. 중복은 아니지만 이메일 형식이 틀린 경우
     if (!isEmail(id)) {
-      toast.error('이메일 형식이 올바르지 않습니다.');
+      showToast('이메일 형식으로 작성해주세요');
       return;
     }
 
-    // 4. 모두 통과 - id값을 다음 페이지에 state로 전달
-    toast.success('사용 가능한 이메일입니다!');
-    navigate('/password', { state: { id } });
+    showToast('사용 가능한 이메일입니다!');
+    setTimeout(() => {
+      navigate('/password', { state: { id } });
+    }, 1500);
   };
 
   return (
     <Phone>
       <HeaderBars title="회원가입" />
+
       <InputWrapper>
         <SignupInput
           label="아이디"
           placeholder="아이디(이메일)을 입력해주세요"
           value={id}
           onChange={(e) => setId(e.target.value)}
-        style={{marginLeft:'4px'}}
+          style={{ marginLeft: '4px' }}
         />
-        {id && (
-          <ClearButton onClick={() => setId('')}>
-            <MdClose size={20} color="#AEAEAE" />
-          </ClearButton>
-        )}
+        <ClearButton
+          style={{ marginRight: '-10px' }}
+          onClick={() => {
+            if (id) setId('');
+          }}
+        >
+          <MdClose size={20} color="#AEAEAE" />
+        </ClearButton>
       </InputWrapper>
 
       <MainButton
@@ -73,7 +96,7 @@ function InputIdpage() {
         disabled={!id.trim()}
         style={{
           marginLeft: '10px',
-          marginTop: '380px',
+          marginTop: '415px',
           backgroundColor: id.trim() ? '#FF9223' : '#FF92234D',
           color: 'white',
           height: '48px',
@@ -83,7 +106,32 @@ function InputIdpage() {
         다음
       </MainButton>
 
-      <ToastContainer position="top-center" autoClose={2000} />
+      {/* ✅ 버튼 바로 위 중앙 정렬된 토스트 컨테이너 */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: '60px', // 버튼 바로 위 위치
+          left: 0,
+          right: 0,
+          zIndex: 9999,
+          display: 'flex',
+          justifyContent: 'center',
+          pointerEvents: 'none', // 바깥 클릭 방지
+        }}
+      >
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar
+          closeOnClick={false}
+          pauseOnHover={false}
+          draggable={false}
+          theme="colored"
+          style={{
+            width: '327px', // 토스트 너비 고정
+            pointerEvents: 'auto', // 토스트 내 클릭 가능
+          }}
+        />
+      </div>
     </Phone>
   );
 }

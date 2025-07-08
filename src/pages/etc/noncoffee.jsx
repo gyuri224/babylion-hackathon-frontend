@@ -18,14 +18,13 @@ function PageWithTwoWindows() {
             <Title>레몬수</Title>
             <Description>더운 여름엔 수분 섭취가 중요해요</Description>
             <SmallBox>
-              비타민 C가 풍부한<br />
-              상큼한 홈메이드 음료입니다.
+만드는 법:<br/>레몬 반 개(레몬즙)를 물 500ml와 섞어 마셔요
             </SmallBox>
           </TextArea>
         </Box>
 
         <Box>
-          <SectionTitle>이번주 추천 음식</SectionTitle>
+          <SectionTitle style={{marginBottom:'15px'}}>이번주 추천 음식</SectionTitle>
           <Image src={blue} alt="블루베리" />
           <TextArea>
             <Title>블루베리</Title>

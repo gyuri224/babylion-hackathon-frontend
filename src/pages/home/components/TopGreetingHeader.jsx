@@ -14,7 +14,7 @@ const TopGreetingHeader = () => {
   useEffect(() => {
     const loginAndGetNickname = async () => {
       try {
-        const res = await axios.post('/api/coffee/login', {
+        const res = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
           email: 'test123@gmail.com',
           password: 'test123!',
         });

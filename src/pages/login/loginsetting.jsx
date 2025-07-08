@@ -1,4 +1,3 @@
-
 import ImageButton from '../../components/previous';
 import React, { useState } from 'react';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
@@ -11,8 +10,25 @@ import axios from 'axios';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import HeaderBar from '../../components/HeaderBar';
 import HeaderBars from '../../components/HeaderBarj';
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import { Slide } from 'react-toastify';
+import styled from 'styled-components';
+import 'react-toastify/dist/ReactToastify.css';
+
+const BASE_URL = "https://coffeeloging.duckdns.org";
+const ClearButton = styled.button`
+  position: absolute;
+  right: 20px;
+  top: 46px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -10px;
+`;
 
 function LoginSetting() {
   const [id, setId] = useState('');
@@ -20,15 +36,33 @@ function LoginSetting() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-
-
   const isLoginEnabled = id.trim() !== '' && password.trim() !== '';
+
+  // ✅ 실패 토스트 메시지 함수
+  const showToast = () => {
+    toast('아이디 / 비밀번호가 일치하지 않아요', {
+      style: {
+        backgroundColor: '#FFEDDB',
+        color: '#FF9223',
+        fontWeight: '400',
+        fontSize: '12px',
+        width: '327px',
+        height: '32px',
+        lineHeight: '150%',
+        fontFamily: "'Pretendard', sans-serif",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      icon: false,
+    });
+  };
 
   const handleLogin = async () => {
     if (!isLoginEnabled) return;
 
     try {
-      const response = await axios.post('/api/coffee/login', {
+      const response = await axios.post(`${BASE_URL}/api/coffee/login`, {
         id,
         password,
       });
@@ -36,34 +70,34 @@ function LoginSetting() {
       if (response.status === 200) {
         navigate('/home');
       } else {
-        alert('로그인 실패: 서버 응답이 올바르지 않습니다.');
+        showToast(); // ✅ 서버 응답 이상 시 토스트
       }
     } catch (error) {
       console.error('로그인 실패:', error);
       if (error.response && error.response.status === 401) {
-        alert('아이디 또는 비밀번호가 일치하지 않습니다.');
+        showToast(); // ✅ 아이디/비번 불일치 시 토스트
       } else {
         alert('서버 오류가 발생했습니다.');
       }
     }
   };
 
-
   const wrapperStyle = {
     position: 'relative',
     marginBottom: '30px',
   };
 
-const iconButtonStyle = {
-  position: 'absolute',
-  right: '12px',
-  top: '80%', 
-  transform: 'translateY(-50%)',
-  background: 'none',
-  border: 'none',
-  cursor: 'pointer',
-  color: '#999',
-  padding: 0,
+  const iconButtonStyle = {
+    position: 'absolute',
+    right: '12px',
+    top: '80%',
+    transform: 'translateY(-50%)',
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    color: '#999',
+    padding: 0,
+    marginRight: '6px',
   };
 
   return (
@@ -77,13 +111,12 @@ const iconButtonStyle = {
           value={id}
           onChange={(e) => setId(e.target.value)}
         />
-        <button onClick={() => setId('')} style={iconButtonStyle} >
-          <MdClose size={20} />
-        </button>
+        <ClearButton onClick={() => setId('')}>
+          <MdClose size={20} color="#AEAEAE" />
+        </ClearButton>
       </div>
 
       <div style={wrapperStyle}>
-        
         <SignupInput
           label="비밀번호"
           placeholder="비밀번호를 입력해주세요"
@@ -95,10 +128,13 @@ const iconButtonStyle = {
           onClick={() => setShowPassword(!showPassword)}
           style={iconButtonStyle}
         >
-          {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+          {showPassword ? (
+            <AiFillEyeInvisible size={20} />
+          ) : (
+            <AiFillEye size={20} />
+          )}
         </button>
-        </div>
-    
+      </div>
 
       <MainButton
         onClick={handleLogin}
@@ -107,27 +143,25 @@ const iconButtonStyle = {
           backgroundColor: isLoginEnabled ? '#FF9223' : '#FF92234D',
           color: '#FCFCFC',
           cursor: isLoginEnabled ? 'pointer' : 'not-allowed',
-          marginLeft:'9px',
-          marginTop:'240px'
+          marginLeft: '9px',
+          marginTop: '279px',
         }}
       >
         로그인
       </MainButton>
-      <ToastContainer
-position="bottom-center"
-autoClose={2000}
-hideProgressBar
-newestOnTop={false}
-closeOnClick={false}
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="colored"
-transition={Slide}
-/>
-    </Phone>
 
+      {/* ✅ 토스트 컨테이너 */}
+      <ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar
+        closeOnClick={false}
+        pauseOnHover={false}
+        draggable={false}
+        theme="colored"
+        transition={Slide}
+      />
+    </Phone>
   );
 }
 

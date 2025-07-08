@@ -38,7 +38,7 @@ const CoffeeReport = () => {
     const fetchUserAndTopCoffeeAndAverage = async () => {
       try {
         // 로그인
-        const loginRes = await axios.post('/api/coffee/login', {
+        const loginRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
           email: 'test123@gmail.com',
           password: 'test123!'
         });
@@ -46,22 +46,22 @@ const CoffeeReport = () => {
         setNickname(nickname);
         localStorage.setItem('token', token);
         // 최다 커피 메뉴
-        const topCoffeeRes = await axios.get('/api/coffee/top-coffee', {
+        const topCoffeeRes = await axios.get('https://coffeeloging.duckdns.org/api/coffee/top-coffee', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setTopCoffee(topCoffeeRes.data.topCoffee);
         // 한 달 평균 잔수
-        const avgRes = await axios.get('/api/coffee/average', {
+        const avgRes = await axios.get('https://coffeeloging.duckdns.org/api/coffee/average', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setAvgCount(avgRes.data.average || '0');
         // 카페라떼 총 누적 잔수
-        const latteRes = await axios.get('/api/coffee/total-latte', {
+        const latteRes = await axios.get('https://coffeeloging.duckdns.org/api/coffee/total-latte', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setLatteCount(latteRes.data.totalLatte || '0');
         // 저번달과 커피잔 수 비교
-        const compareRes = await axios.get('/api/coffee/compare-last-month', {
+        const compareRes = await axios.get('https://coffeeloging.duckdns.org/api/coffee/compare-last-month', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setIsLessThanLastMonth(compareRes.data.lessThanLastMonth);

@@ -35,7 +35,7 @@ const CoffeeCalendar = () => {
       try {
         const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
         const endDate = `${year}-${String(month).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
-        const res = await axios.get('/api/coffee/heatmap', {
+        const res = await axios.get('https://coffeeloging.duckdns.org/api/coffee/heatmap', {
           params: {
             startDate,
             endDate,

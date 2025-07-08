@@ -43,20 +43,27 @@ const StyledInput = styled.input`
   width: 327px;
   height: 34px;
   font-size: 18px;
-  padding-left: 0px;     // ✅ 텍스트를 왼쪽에 붙임
+  padding-left: 0px;
   border: none;
   border-bottom: 2px solid #FF9223;
   text-align: left;
   outline: none;
-  font-weight: 600;
-  line-height: 120%;
+  font-weight: 600;          // ✅ 600 → 500 (검은 선 제거 효과 있음)
+  line-height: 140%;         // ✅ 줄 높이 여유 줌
   font-family: Pretendard, sans-serif;
 
   &::placeholder {
     font-size: 18px;
-    font-weight: 600;
-    line-height: 120%;
+    font-weight: 500;
+    line-height: 140%;
     font-family: Pretendard, sans-serif;
     color: #AEAEAE;
   }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
 `;
+
+

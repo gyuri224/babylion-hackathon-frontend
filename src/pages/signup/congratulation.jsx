@@ -1,32 +1,17 @@
-import { Timer } from '@icon-park/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const style = {
-  container: {
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-  },
-  text: {
-    color: 'black',
-    fontSize: '4rem',
-    fontWeight: 'bold',
-    animation: 'fadeScale 3s ease forwards',
-  },
-};
+import styled from 'styled-components';
+import { typography } from '../../styles/typography';
 
 export default function CongraturationPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/home'); 
-    }, 2000); // 2000ms = 2초
+      navigate('/home');
+    }, 2000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, [navigate]);
 
   return (
@@ -53,9 +38,23 @@ export default function CongraturationPage() {
           }
         `}
       </style>
-      <div style={style.container}>
-        <div style={style.text}>환영해요!</div>
-      </div>
+      <Container>
+        <StyledTitle>환영해요!</StyledTitle>
+      </Container>
     </>
   );
 }
+
+const Container = styled.div`
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+`;
+
+const StyledTitle = styled.div`
+  ${typography.title};
+  animation: fadeScale 2s ease-in-out;
+  color: #000000;
+`;

@@ -11,6 +11,8 @@ import MainButton from '../../components/MainButton';
 import { MdClose } from 'react-icons/md'; // X 아이콘 불러오기
 import HeaderBar from '../../components/HeaderBar';
 function NameInputPage() {
+  const BASE_URL = "https://coffeeloging.duckdns.org";
+
   const [name, setName] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
@@ -55,7 +57,7 @@ function NameInputPage() {
       return;
     }
   try {
-    const response = await axios.post('/api/coffee/signup', {
+    const response = await axios.post('${BASE_URL}/api/coffee/signup', {
       email: id,
       password,
     });
@@ -92,7 +94,7 @@ function NameInputPage() {
           onChange={handleChange}
         />
         {/* 항상 X 버튼을 표시 */}
-        <ClearButton onClick={clearName}>
+        <ClearButton onClick={clearName} style={{marginRight:'-20px'}}>
           <MdClose size={20} color={name ? '#888' : '#ccc'} />
         </ClearButton>
 
@@ -106,7 +108,7 @@ function NameInputPage() {
         disabled={!isValidName()}
         style={{
           backgroundColor: isValidName() ? '#ff9223' : '#ffbb76',
-          marginTop: '343px',
+          marginTop: '379px',
           marginLeft: '9px',
           color: 'white',
         }}

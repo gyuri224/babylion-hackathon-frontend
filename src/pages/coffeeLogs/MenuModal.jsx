@@ -91,7 +91,7 @@ const MenuModal = ({ show, setShow, menu, onSelect, menuOptions }) => {
 
 export default MenuModal;
 
-
+  
 
 const ModalHeader = styled.div`
   display: flex;
