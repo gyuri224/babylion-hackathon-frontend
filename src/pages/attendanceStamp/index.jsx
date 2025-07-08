@@ -11,11 +11,9 @@ import StampPopup from './StampPopup';
 
 const AttendanceStampPage = () => {
   const [isFullAttend, setIsFullAttend] = useState(false);
-<<<<<<< HEAD
   const [rewardAvailable, setRewardAvailable] = useState(false); // eslint-disable-line no-unused-vars
-=======
-  const [, setRewardAvailable] = useState(false);
->>>>>>> 9c66959b1e6cfcdc172bdb9327d9c20332ad0dac
+
+
   const [loading, setLoading] = useState(false);
   const [showStampPopup, setShowStampPopup] = useState(false);
   const [attendedDays, setAttendedDays] = useState([]);
