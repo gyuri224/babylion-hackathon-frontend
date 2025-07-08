@@ -11,7 +11,7 @@ import HeaderBar from '../../components/HeaderBar';
 import HeaderBars from '../../components/HeaderBarj';
 function Password() {
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [conditions, setConditions] = useState({
     length: false,
     letter: false,
@@ -77,7 +77,7 @@ function Password() {
   onClick={handleNext}
   disabled={!isAllValid}      // 여기 isMatch -> isAllValid 로 변경
   style={{
-    marginTop: '218px',
+    marginTop: '259px',
     marginLeft:"9px",
     backgroundColor: isAllValid ? '#ff9223' : '#ffbb76',  // 마찬가지로 isMatch -> isAllValid
     color: 'white',

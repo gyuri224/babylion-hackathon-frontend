@@ -57,7 +57,7 @@ function NameInputPage() {
       return;
     }
   try {
-    const response = await axios.post('${BASE_URL}/api/coffee/signup', {
+    const response = await axios.post('${BASE_URL}/api/coffee/login', {
       email: id,
       password,
     });
