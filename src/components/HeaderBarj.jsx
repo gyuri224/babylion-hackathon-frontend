@@ -47,9 +47,4 @@ const Title = styled.h1`
   margin: 0;
   width: max-content;
   pointer-events: none;
-<<<<<<< HEAD
-
-`; 
-=======
-`; 
->>>>>>> 9c66959b1e6cfcdc172bdb9327d9c20332ad0dac
+`;
