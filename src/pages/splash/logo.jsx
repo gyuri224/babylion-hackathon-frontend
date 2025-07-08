@@ -1,18 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import img2 from '../../img/images.jpg';
 import { useSwipeable } from 'react-swipeable';
 import PageContainer from '../../components/PageContainer';
+import Phone from '../../components/Phone'
 
 function Logo() {
   const navigate = useNavigate();
 
   const handlers = useSwipeable({
     onSwipedLeft: () => {
-      navigate('/first');     
+      console.log('✅ 왼쪽으로 스와이프 감지됨');
+      navigate('/first');
+    },
+    onSwiping: (eventData) => {
+      console.log('↔ 스와이프 중...', eventData.dir); // 방향 확인용
+    },
+    onTap: () => {
+      console.log('🖱 탭 감지됨');
     },
     preventDefaultTouchmoveEvent: true,
     trackTouch: true,
+    trackMouse: true, // 마우스도 감지되도록 추가
   });
 
   const styles = {
@@ -26,20 +35,20 @@ function Logo() {
       alignItems: 'center',
     },
     image: {
-      width: '80%',
-      maxWidth: '400px',
-      height: 'auto',
+      width:'111px',
+      height:'38px',
+      marginTop:'260px',
+      marginBottom:'325px',
+      marginLeft:'132px',
+      marginRight:'132px'
+
     },
   };
 
   return (
-    <div style={styles.PageContainer}>
-    <div {...handlers}>
-    <div style={styles.page}>
+    <Phone {...handlers}>
       <img src={img2} alt="중앙 이미지" style={styles.image} />
-    </div>
-    </div>
-    </div>
+    </Phone>
   );
 }
 

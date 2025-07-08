@@ -3,7 +3,7 @@ import img3 from '../../img/image4.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import styled, { createGlobalStyle } from 'styled-components';
-
+import { typography } from '../../styles/typography';
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -87,10 +87,9 @@ const TextWrapper = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: 24px;
-  font-weight: bold;
+    ${typography.sub_title}; 
+  margin-top: 74.5px;
   text-align: center;
-  margin-top: 130px;
 `;
 
 const Image = styled.img`

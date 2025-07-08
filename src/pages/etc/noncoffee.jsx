@@ -1,126 +1,116 @@
 import React from 'react';
 import Phone from '../../components/Phone';
-import Header1 from '../../components/Header';
+import HeaderBars from '../../components/HeaderBarj';
 import blue from '../../img/berry.jpg';
 import lemon from '../../img/lemonwater.jpg';
+import styled from 'styled-components';
 
 function PageWithTwoWindows() {
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    height: '100vh',
-    padding: '20px',
-    boxSizing: 'border-box',
-    backgroundColor: '#f9f9f9',
-  };
-
-  const boxStyle = {
-    width: '90%',
-    maxWidth: '330px',
-    height: 'auto',
-    backgroundColor: '#fff',
-    borderRadius: '16px',
-    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-    marginBottom: '10px',
-    padding: '16px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    textAlign: 'center',
-  };
-
-  const imageStyle = {
-    width: '250px',
-    height: '160px',
-    objectFit: 'cover',
-    borderRadius: '12px',
-  };
-
-  const titleStyle = {
-    fontSize: '17px',
-    fontWeight: 'bold',
-    color: '#ff9223',
-    marginTop: '8px',
-    alignSelf: 'flex-start',
-    textAlign: 'left',
-  };
-
-  const descStyle = {
-    fontSize: '14px',
-    color: '#555',
-    alignSelf: 'flex-start',
-    textAlign: 'left',
-    marginTop: '4px',
-  };
-
-  const smallBoxStyle = {
-    backgroundColor: '#f0f0f0',
-    padding: '8px 12px',
-    borderRadius: '8px',
-    marginTop: '10px',
-    fontSize: '13px',
-    color: '#333',
-    lineHeight: '1.4',
-    textAlign: 'left',
-    alignSelf: 'flex-start',
-  };
-
   return (
     <Phone>
-      <div style={containerStyle}>
-        <Header1 title="커피 말고" />
-
-        {/* 레몬수 박스 */}
-        <div style={boxStyle}>
-          <div style={{
-            alignSelf: 'flex-start',
-            fontWeight: 'bold',
-            fontSize: '16px',
-            marginBottom: '3px',
-            marginTop: '-10px',
-          }}>
-            이번주 추천 음료
-          </div>
-          <img src={lemon} alt="레몬" style={imageStyle} />
-          <div style={{ width: '100%' }}>
-            <div style={titleStyle}>레몬수</div>
-            <div style={descStyle}>만드는 법:<br/>레몬 반 개(레몬즙)를 물 500ml와 섞어 마셔요</div>
-
-            {/* 🔽 추가된 설명 박스 */}
-            <div style={smallBoxStyle}>
+      <HeaderBars title="커피 말고" />
+      <ContentWrapper>
+        <Box>
+          <SectionTitle>이번주 추천 음료</SectionTitle>
+          <Image src={lemon} alt="레몬" />
+          <TextArea>
+            <Title>레몬수</Title>
+            <Description>더운 여름엔 수분 섭취가 중요해요</Description>
+            <SmallBox>
               비타민 C가 풍부한<br />
               상큼한 홈메이드 음료입니다.
-            </div>
-          </div>
-        </div>
+            </SmallBox>
+          </TextArea>
+        </Box>
 
-        {/* 블루베리 박스 */}
-        <div style={boxStyle}>
-          <div style={{
-            alignSelf: 'flex-start',
-            fontWeight: 'bold',
-            fontSize: '16px',
-            marginBottom: '3px',
-            marginTop: '-10px',
-          }}>
-            이번주 추천 음식
-          </div>
-          <img src={blue} alt="블루베리" style={imageStyle} />
-          <div style={{ width: '100%' }}>
-            <div style={{ ...titleStyle, color: '#6a0dad' }}>블루베리</div>
-            <div style={descStyle}>상큼하게 하루를 시작하세요!</div>
-
-            {/* 🔽 추가된 설명 박스 */}
-            <div style={smallBoxStyle}>
-작은 크기에도 불구하고 비타민과 항산화 성분이 풍부해 꾸준히 먹으면 건강에 좋아요
-            </div>
-          </div>
-        </div>
-      </div>
+        <Box>
+          <SectionTitle>이번주 추천 음식</SectionTitle>
+          <Image src={blue} alt="블루베리" />
+          <TextArea>
+            <Title>블루베리</Title>
+            <Description>상큼 달콤한 핑거 푸드</Description>
+            <SmallBox>
+              작은 크기에도 불구하고 비타민과 항산화 성분이 풍부해 꾸준히 먹으면 건강에 좋아요
+            </SmallBox>
+          </TextArea>
+        </Box>
+      </ContentWrapper>
     </Phone>
   );
 }
 
 export default PageWithTwoWindows;
+
+const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; // ✅ 가로 가운데 정렬
+  padding: 20px;
+  gap: 24px;
+`;
+
+const Box = styled.div`
+  width: 327px;
+  height: 415px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Image = styled.img`
+  width: 281px;
+  height: 192px;
+  object-fit: cover;
+  border-radius: 12px;
+  align-self: center;
+`;
+
+const SectionTitle = styled.div`
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 13px;
+  margin-bottom: 0px;
+  line-height: 150%;
+  font-family: 'Pretendard', sans-serif;
+`;
+
+const TextArea = styled.div`
+  width: 100%;
+  margin-top: 8px;
+`;
+
+const Title = styled.div`
+  font-size: 36px;
+  font-weight: 700;
+  color: #FF9223;
+  text-align: left;
+  line-height: 120%;
+  font-family: 'Pretendard', sans-serif;
+`;
+
+const Description = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: black;
+  text-align: left;
+  margin-top: 4px;
+  line-height: 150%;
+  font-family: 'Pretendard', sans-serif;
+`;
+
+const SmallBox = styled.div`
+  background-color: #f0f0f0;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: #333;
+  line-height: 1.4;
+  text-align: left;
+  width: 279px;
+  height: 48px;
+  font-family: 'Pretendard', sans-serif;
+`;

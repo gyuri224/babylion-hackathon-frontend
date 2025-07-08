@@ -3,12 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import { FaCheckCircle } from 'react-icons/fa';
-
 import Phone from '../../components/Phone';
 import SignupInput from '../../components/signupinput';
 import Header1 from '../../components/Header';
 import MainButton from '../../components/MainButton';
-
+import HeaderBar from '../../components/HeaderBar';
+import HeaderBars from '../../components/HeaderBarj';
 function Password() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(true);
@@ -51,7 +51,7 @@ function Password() {
 
   return (
     <Phone>
-      <Header1 title="회원가입" />
+      <HeaderBars title="회원가입" />
 
       <InputWrapper>
         <SignupInput
@@ -77,7 +77,7 @@ function Password() {
   onClick={handleNext}
   disabled={!isAllValid}      // 여기 isMatch -> isAllValid 로 변경
   style={{
-    marginTop: '310px',
+    marginTop: '218px',
     marginLeft:"9px",
     backgroundColor: isAllValid ? '#ff9223' : '#ffbb76',  // 마찬가지로 isMatch -> isAllValid
     color: 'white',
@@ -116,6 +116,7 @@ const ToggleButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 20px;
+  color: #AEAEAE;
 `;
 
 const styles = {

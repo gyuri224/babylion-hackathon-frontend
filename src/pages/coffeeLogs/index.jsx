@@ -155,10 +155,6 @@ const CoffeeLogPage = () => {
 
 export default CoffeeLogPage;
 
-const Container = styled.div`
-  padding: 20px;
-  font-family: sans-serif;
-`;
 
 const Form = styled.form.attrs({ id: 'coffee-log-form' })`
   display: flex;
