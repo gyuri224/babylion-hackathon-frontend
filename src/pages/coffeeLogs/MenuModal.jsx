@@ -91,36 +91,7 @@ const MenuModal = ({ show, setShow, menu, onSelect, menuOptions }) => {
 
 export default MenuModal;
 
-const Overlay = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0,0,0,0.25);
-  z-index: 9999;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-`;
 
-const Sheet = styled.div`
-  width: 100%;
-  max-width: 400px;
-  min-width: 320px;
-  margin: 0 auto 0 auto;
-  background: ${colors.white};
-  border-radius: 32px 32px 0 0;
-  box-shadow: 0 -4px 24px rgba(0,0,0,0.12);
-  padding-top: 16px;
-  position: relative;
-  animation: slideUp 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-
-  @keyframes slideUp {
-    from { transform: translateY(100%); }
-    to { transform: translateY(0); }
-  }
-`;
 
 const ModalHeader = styled.div`
   display: flex;

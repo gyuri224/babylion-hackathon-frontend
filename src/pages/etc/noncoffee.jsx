@@ -114,5 +114,7 @@ const SmallBox = styled.div`
   width: 279px;
   height: 48px;
   font-family: 'Pretendard', sans-serif;
+
 `;
+
 
