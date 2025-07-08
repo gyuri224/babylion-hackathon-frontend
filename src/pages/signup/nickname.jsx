@@ -11,7 +11,7 @@ import MainButton from '../../components/MainButton';
 import { MdClose } from 'react-icons/md'; // X 아이콘 불러오기
 import HeaderBar from '../../components/HeaderBar';
 function NameInputPage() {
-  const BASE_URL = "https://coffeeloging.duckdns.org";
+  
 
   const [name, setName] = useState('');
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ function NameInputPage() {
       return;
     }
   try {
-    const response = await axios.post('${BASE_URL}/api/coffee/login', {
+    const response = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
       email: id,
       password,
     });
