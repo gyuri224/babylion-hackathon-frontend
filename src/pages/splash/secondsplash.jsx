@@ -3,6 +3,7 @@ import img4 from '../../img/image5.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import styled, { createGlobalStyle } from 'styled-components';
+import { typography } from '../../styles/typography';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -77,15 +78,15 @@ const Content = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   font-family: Arial, sans-serif;
 `;
 
 const Text = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
+    ${typography.sub_title}; 
+    margin-top: 74.5px;
+    text-align: center;
+
 `;
 
 const Image = styled.img`
