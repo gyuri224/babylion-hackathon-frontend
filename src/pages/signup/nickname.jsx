@@ -50,17 +50,25 @@ function NameInputPage() {
 
     return false;
   };
+  
+const handleNext = async () => {
+  if (!isValidName()) {
+    alert('별명을 올바르게 입력해주세요.');
+    return;
+  }
 
-  const handleNext = async () => {
-    if (!isValidName()) {
-      alert('별명을 올바르게 입력해주세요.');
-      return;
-    }
   try {
+    console.log("🔐 로그인 요청: ", {
+      email: id,
+      password,
+    });
+
     const response = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
       email: id,
       password,
     });
+
+    console.log("✅ 로그인 응답:", response.data);
 
     const token = response.data.token;
     if (token) {
@@ -72,7 +80,12 @@ function NameInputPage() {
     }
 
   } catch (error) {
-    console.error('로그인 실패:', error);
+    console.error('❌ 로그인 실패:', error);
+    if (error.response) {
+      console.error("❌ 서버 응답 상태:", error.response.status);
+      console.error("❌ 서버 응답 본문:", error.response.data);
+    }
+
     if (error.response && error.response.status === 401) {
       alert('아이디 또는 비밀번호가 일치하지 않습니다.');
     } else {
