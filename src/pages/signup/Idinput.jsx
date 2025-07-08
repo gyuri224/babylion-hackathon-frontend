@@ -28,13 +28,16 @@ function InputIdpage() {
         color: '#FF9223',
         fontWeight: '400',
         fontSize: '12px',
-        width: '327px',
-        height: '32px',
+        width: '320px',
+        height: '10px',
         lineHeight: '150%',
         fontFamily: "'Pretendard', sans-serif",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop:'500px',
+        marginRight:'-28px'
+
       },
     });
   };
@@ -43,10 +46,12 @@ function InputIdpage() {
     let exists = false;
 
     try {
-      const response = await axios.post(
-      'https://coffeeloging.duckdns.org/api/coffee/check-email', {
-        email: id,
-      });
+const response = await axios.post(
+  'https://coffeeloging.duckdns.org/api/coffee/check-email',
+  { email: id },
+  { withCredentials: true }   // ✅ 이게 포인트!
+
+      );
       exists = response.data.exists;
     } catch (error) {
       showToast('서버 오류: 이메일 확인 실패');
@@ -63,10 +68,7 @@ function InputIdpage() {
       return;
     }
 
-    showToast('사용 가능한 이메일입니다!');
-    setTimeout(() => {
-      navigate('/password', { state: { id } });
-    }, 1500);
+  navigate('/password', { state: { id } });
   };
 
   return (
@@ -111,12 +113,13 @@ function InputIdpage() {
         style={{
           position: 'fixed',
           bottom: '60px', // 버튼 바로 위 위치
-          left: 0,
+          left: '100px',
           right: 0,
           zIndex: 9999,
           display: 'flex',
           justifyContent: 'center',
-          pointerEvents: 'none', // 바깥 클릭 방지
+          pointerEvents: 'none', 
+
         }}
       >
         <ToastContainer
@@ -127,8 +130,7 @@ function InputIdpage() {
           draggable={false}
           theme="colored"
           style={{
-            width: '327px', // 토스트 너비 고정
-            pointerEvents: 'auto', // 토스트 내 클릭 가능
+            width: '327px', 
           }}
         />
       </div>

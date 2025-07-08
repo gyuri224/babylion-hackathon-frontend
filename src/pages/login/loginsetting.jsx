@@ -36,25 +36,34 @@ function LoginSetting() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(id)) {
+    showToast('이메일 형식으로 입력해주세요');
+    return;
+  }
+
+
   const isLoginEnabled = id.trim() !== '' && password.trim() !== '';
 
   // ✅ 실패 토스트 메시지 함수
-  const showToast = () => {
-    toast('아이디 / 비밀번호가 일치하지 않아요', {
+  const showToast = (message) => {
+    toast(message, {
+      icon: false,
       style: {
         backgroundColor: '#FFEDDB',
         color: '#FF9223',
         fontWeight: '400',
         fontSize: '12px',
-        width: '327px',
-        height: '32px',
+        width: '320px',
+        height: '10px',
         lineHeight: '150%',
         fontFamily: "'Pretendard', sans-serif",
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-      },
-      icon: false,
+        marginBottom:'100px',
+        marginRight:'0px'
+         },
     });
   };
 
@@ -70,14 +79,14 @@ function LoginSetting() {
       if (response.status === 200) {
         navigate('/home');
       } else {
-        showToast(); // ✅ 서버 응답 이상 시 토스트
+        showToast('아이디/비밀번호가 일치하지 않아요'); // ✅ 서버 응답 이상 시 토스트
       }
     } catch (error) {
       console.error('로그인 실패:', error);
       if (error.response && error.response.status === 401) {
-        showToast(); // ✅ 아이디/비번 불일치 시 토스트
+        showToast('아이디와 비밀번호가 일치하지 않아요'); // ✅ 아이디/비번 불일치 시 토스트
       } else {
-        alert('서버 오류가 발생했습니다.');
+        showToast('아이디와 비밀번호가 일치하지 않아요');
       }
     }
   };
@@ -135,7 +144,17 @@ function LoginSetting() {
           )}
         </button>
       </div>
-
+<ToastContainer
+        position="bottom-center"
+        autoClose={2000}
+        hideProgressBar
+        closeOnClick={false}
+        pauseOnHover={false}
+        draggable={false}
+        theme="colored"
+        transition={Slide}
+        padding={0}
+      />
       <MainButton
         onClick={handleLogin}
         disabled={!isLoginEnabled}
@@ -151,16 +170,7 @@ function LoginSetting() {
       </MainButton>
 
       {/* ✅ 토스트 컨테이너 */}
-      <ToastContainer
-        position="bottom-center"
-        autoClose={2000}
-        hideProgressBar
-        closeOnClick={false}
-        pauseOnHover={false}
-        draggable={false}
-        theme="colored"
-        transition={Slide}
-      />
+      
     </Phone>
   );
 }
