@@ -157,21 +157,3 @@ const ToggleButton = styled.button`
   ${typography.des};
 `;
 
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 375px;
-  padding: 0;
-  margin: 0 auto;
-  padding-bottom: 137px;
-`;
-
-const NavBarWrapper = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  z-index: 100;
-  background-color: ${colors.white};
-  // ...생략
-`;
