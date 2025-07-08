@@ -27,6 +27,10 @@ function LoginSetting() {
       });
 
       if (response.status === 200) {
+        const { token } = response.data;
+        if (token) {
+          localStorage.setItem('token', token);
+        }
         navigate('/home');
       } else {
         alert('로그인 실패: 서버 응답이 올바르지 않습니다.');

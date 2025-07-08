@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import colors from '../../styles/colors';
 import { typography } from '../../styles/typography';
-import axios from 'axios'; 
+import axios from 'axios';
+import { useAuthStore } from '../../store/useAuthStore'; // ⬅️ 추가
 
 const CoffeeCalendar = () => {
   const [attendedDays, setAttendedDays] = useState([]);
   const today = new Date();
   const month = today.getMonth() + 1;
   const year = today.getFullYear();
+
+  const accessToken = useAuthStore.getState().accessToken; // ⬅️ 토큰 불러오기
 
   const days = ['일', '월', '화', '수', '목', '금', '토'];
   const firstDay = new Date(year, month - 1, 1).getDay();
@@ -23,6 +26,9 @@ const CoffeeCalendar = () => {
       try {
         const res = await axios.get('/api/coffee/attend/calendar', {
           params: { month: `${year}-${String(month).padStart(2, '0')}` },
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // ⬅️ 토큰 추가
+          },
         });
         setAttendedDays(res.data.attendedDays || []);
       } catch (err) {
@@ -30,7 +36,7 @@ const CoffeeCalendar = () => {
       }
     };
     fetchAttend();
-  }, [month, year]);
+  }, [month, year, accessToken]);
 
   return (
     <Wrapper>

@@ -9,6 +9,7 @@ import HeaderBar from '../../components/HeaderBar';
 import PageContainer from '../../components/PageContainer';
 import MainButton from '../../components/MainButton';
 import axios from 'axios';
+import { useAuthStore } from '../../store/useAuthStore';
 
 const CoffeeLogPage = () => {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ const CoffeeLogPage = () => {
   const [showAmountWheel, setShowAmountWheel] = useState(false);
   const amountOptions = Array.from({ length: 10 }, (_, i) => String(i));
 
+  const accessToken = useAuthStore.getState().accessToken;
+
   useEffect(() => {
     // 최근 선택 메뉴를 서버에서 불러오기
     axios.get('/api/coffee/recent-coffee')
@@ -52,13 +55,16 @@ const CoffeeLogPage = () => {
     e.preventDefault();
     const fullDate = `${pickerValue.year.replace('년', '')}-${pickerValue.month.replace('월', '').padStart(2, '0')}-${pickerValue.day.replace('일', '').padStart(2, '0')}`;
     const body = {
-      userId: 1,
       date: fullDate,
       coffeeName: menu,
       quantity: Number(amount),
     };
     try {
-      await axios.post('/api/coffee/record', body);
+      await axios.post('/api/coffee/record', body, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        }
+      });
       // 출석 체크 API 호출
       await axios.post('/api/coffee/attend/check');
       setRecentMenus((prev) => {

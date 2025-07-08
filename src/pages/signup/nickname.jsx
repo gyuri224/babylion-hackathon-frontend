@@ -68,6 +68,10 @@ function NameInputPage() {
       });
 
       if (response.status === 200) {
+        const { token } = response.data;
+        if (token) {
+          localStorage.setItem('token', token);
+        }
         navigate('/con', { state: { id, password, name } });
       } else {
         alert(response.data.message || '회원가입에 실패했습니다.');
