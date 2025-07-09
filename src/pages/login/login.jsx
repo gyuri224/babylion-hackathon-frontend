@@ -1,6 +1,8 @@
+
 import React from 'react';
 import img2 from '../../img/images.jpg';
 import { useNavigate } from 'react-router-dom';
+import MainButton from '../../components/MainButton';
 
 function LoginPage() {
   const navigate = useNavigate(); // 👈 페이지 이동 함수
@@ -22,11 +24,9 @@ function LoginPage() {
         <div style={{ flexGrow: 1 }} />
         <img src={img2} alt="중앙 이미지" style={styles.image} />
         
-        {/* 로그인 버튼 */}
-        <button style={styles.loginButton} onClick={handleLogin}>
+        <MainButton onClick={handleLogin} style={{marginBottom:'14px'}}>
           로그인
-        </button>
-
+        </MainButton>
         {/* 회원가입 + 아이디/비밀번호 찾기 */}
         <div style={styles.subButtons}>
           <button style={styles.linkButton} onClick={handleSignup}>
@@ -82,21 +82,20 @@ const styles = {
   linkButton: {
     background: 'none',
     border: 'none',
-    color: '#aeaeae',
+    color: '#AEAEAE',
     fontSize: '14px',
     cursor: 'pointer',
+    fontSize: '12px',
+    fontWeight: 400,
+    lineHeight: '150%', 
+    fontFamily: 'Pretendard, sans-serif',
+    marginBottom:'41px'
   },
-  divider: {
-    width: '1px',
-    backgroundColor: '#ccc',
-    height: '14px',
-    alignSelf: 'center',
-  },
+
   image: {
-    width: '80%',
-    maxWidth: '400px',
-    height: 'auto',
-    marginBottom: '200px',
+    width: '111px',
+    height: '38px',
+    marginBottom:'252px'
   },
 };
 

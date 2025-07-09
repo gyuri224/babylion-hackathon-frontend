@@ -35,7 +35,7 @@ const CoffeeCalendar = () => {
       try {
         const startDate = `${year}-${String(month).padStart(2, '0')}-01`;
         const endDate = `${year}-${String(month).padStart(2, '0')}-${String(daysInMonth).padStart(2, '0')}`;
-        const res = await axios.get('/api/coffee/heatmap', {
+        const res = await axios.get('https://coffeeloging.duckdns.org/api/coffee/heatmap', {
           params: {
             startDate,
             endDate,
@@ -157,21 +157,3 @@ const ToggleButton = styled.button`
   ${typography.des};
 `;
 
-const PageContainer = styled.div`
-  width: 100%;
-  max-width: 375px;
-  padding: 0;
-  margin: 0 auto;
-  padding-bottom: 137px;
-`;
-
-const NavBarWrapper = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  z-index: 100;
-  background-color: ${colors.white};
-  // ...생략
-`;

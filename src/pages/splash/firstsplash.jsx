@@ -3,7 +3,7 @@ import img3 from '../../img/image4.jpg';
 import { useNavigate } from 'react-router-dom';
 import { useSwipeable } from 'react-swipeable';
 import styled, { createGlobalStyle } from 'styled-components';
-
+import { typography } from '../../styles/typography';
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -63,7 +63,7 @@ const ProgressBarWrapper = styled.div`
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  border-radius: '25px';
+  border-radius: 25px;
   margin-top: 10.5px;
 `;
 
@@ -71,7 +71,7 @@ const ProgressBar = styled.div`
   height: 100%;
   background-color: #ff6200;
   transition: width 0.3s ease;
-  border-radius: 20px;
+  border-radius: 25px;
 `;
 
 const Content = styled.div`
@@ -87,10 +87,9 @@ const TextWrapper = styled.div`
 `;
 
 const Text = styled.div`
-  font-size: 24px;
-  font-weight: bold;
+    ${typography.sub_title}; 
+  margin-top: 74.5px;
   text-align: center;
-  margin-top: 130px;
 `;
 
 const Image = styled.img`

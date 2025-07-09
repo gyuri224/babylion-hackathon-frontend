@@ -1,3 +1,4 @@
+
 import React from 'react';
 import styled from 'styled-components';
 
@@ -18,7 +19,7 @@ function SignupInput({ label, placeholder, value, onChange, type = 'text' }) {
 export default SignupInput;
 
 const Box = styled.div`
-  width: 360px;  // 🔧 입력창 넓이 늘림
+  width: 327px;  // 🔧 입력창 넓이 늘림
   height: 77px;
   border: none;
   padding: 12px 16px;
@@ -26,28 +27,43 @@ const Box = styled.div`
   flex-direction: column;
   justify-content: center;
   box-sizing: border-box;
+  padding:0;
+  margin-left: 4px;
 `;
 
 const Label = styled.label`
   font-size: 18px;
-  color: #333;
-  margin-bottom: 18px;
-  font-family: Pretendard;
-  font-weight: bold;
+  margin-bottom: 21px;
+  font-weight: 600;
+  line-height: 120%;
+  font-family: Pretendard, sans-serif;
 `;
 
 const StyledInput = styled.input`
-  width: 93%;           // ✅ 입력창을 박스 전체에 맞춤
-  height: 32px;
+  width: 327px;
+  height: 34px;
   font-size: 18px;
-  padding-left: 0px;     // ✅ 텍스트를 왼쪽에 붙임
+  padding-left: 0px;
   border: none;
   border-bottom: 2px solid #FF9223;
   text-align: left;
   outline: none;
+  font-weight: 600;          // ✅ 600 → 500 (검은 선 제거 효과 있음)
+  line-height: 140%;         // ✅ 줄 높이 여유 줌
+  font-family: Pretendard, sans-serif;
 
   &::placeholder {
-    color: #aaa;
-    opacity: 1;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 140%;
+    font-family: Pretendard, sans-serif;
+    color: #AEAEAE;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
   }
 `;
+
+

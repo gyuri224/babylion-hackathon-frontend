@@ -2,34 +2,54 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { IoEye, IoEyeOff } from 'react-icons/io5';
 import styled from 'styled-components';
-
+import HeaderBars from '../../components/HeaderBarj';
 import Phone from '../../components/Phone';
-import Header1 from '../../components/Header';
 import SignupInput from '../../components/signupinput';
 import MainButton from '../../components/MainButton';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function PasswordCheck() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // 전달받은 id, password
   const id = location.state?.id || '';
   const password = location.state?.password || '';
-
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
 
   const isMatch = password === confirmPassword;
 
- 
-  // 항상 다음 페이지(/name)로 id, password 전달
   const handleNext = () => {
-    navigate('/api/coffee/signup', { state: { id, password } });
+    if (!isMatch) {
+      toast('비밀번호가 일치하지 않습니다.', {
+        style: {
+          backgroundColor: '#FFEDDB',
+          color: '#FF9223',
+          fontSize: '12px',
+          fontWeight: '400',
+          lineHeight: '150%',
+          fontFamily: 'Pretendard, sans-serif',
+          width: '327px',
+          height: '32px',
+          marginBottom: '100px',
+        },
+        position: 'bottom-center',
+        autoClose: 1500,
+        hideProgressBar: true,
+      });
+      return;
+    }
+
+    // ✅ confirmPassword 함께 전달
+    navigate('/api/coffee/signup', {
+      state: { id, password, confirmPassword },
+    });
   };
 
   return (
     <Phone>
-      <Header1 title="회원가입" />
+      <HeaderBars title="회원가입" />
 
       <InputWrapper>
         <SignupInput
@@ -46,22 +66,26 @@ function PasswordCheck() {
 
       <MainButton
         onClick={handleNext}
+        disabled={confirmPassword === ''}
         style={{
-          marginTop: '470px',
-          backgroundColor: '#ff9223',
+          marginTop: '416px',
+          backgroundColor: confirmPassword ? '#ff9223' : '#FF92234D',
           color: 'white',
           marginLeft: '9px',
+          cursor: confirmPassword ? 'pointer' : 'not-allowed',
         }}
       >
         다음
       </MainButton>
+
+      <ToastContainer />
     </Phone>
   );
 }
 
 export default PasswordCheck;
 
-// styled-components 정의
+// styled-components
 const InputWrapper = styled.div`
   position: relative;
 `;
@@ -74,4 +98,6 @@ const ToggleButton = styled.button`
   border: none;
   cursor: pointer;
   font-size: 20px;
+  color: #AEAEAE;
+  margin-right: -14px;
 `;

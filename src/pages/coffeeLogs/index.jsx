@@ -36,7 +36,7 @@ const CoffeeLogPage = () => {
 
   useEffect(() => {
     // 최근 선택 메뉴를 서버에서 불러오기
-    axios.get('/api/coffee/recent-coffee')
+    axios.get('https://coffeeloging.duckdns.org/api/coffee/recent-coffee')
       .then(res => {
         setRecentMenus(res.data);
       })
@@ -161,10 +161,6 @@ const CoffeeLogPage = () => {
 
 export default CoffeeLogPage;
 
-const Container = styled.div`
-  padding: 20px;
-  font-family: sans-serif;
-`;
 
 const Form = styled.form.attrs({ id: 'coffee-log-form' })`
   display: flex;

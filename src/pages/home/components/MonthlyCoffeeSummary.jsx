@@ -4,16 +4,33 @@ import { Icon } from '@iconify/react';
 import colors from '../../../styles/colors';
 import { typography } from '../../../styles/typography';
 import PageContainer from '../../../components/PageContainer';
-import axios from 'axios';                           
+import axios from 'axios';
 import frame354 from '../../../assets/Frame 354.png';
 
 const MonthCoffeeCount = ({ month = '7월' }) => {
-  const [count, setCount] = useState(0);             
+  const [count, setCount] = useState(0);
+
   useEffect(() => {
     const fetchCoffeeCount = async () => {
+      const token = localStorage.getItem("accessToken");
+      const id = localStorage.getItem("id"); // id 가져오기
+
+      if (!token || !id) {
+        console.warn("토큰 또는 사용자 ID가 없습니다.");
+        return;
+      }
+
       try {
-        const response = await axios.get('/api/coffee/monthly-total', { params: { month } });
-        setCount(response.data.total);               
+        const response = await axios.get('https://coffeeloging.duckdns.org/api/coffee/monthly-total', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            month,
+            userId: id,
+          },
+        });
+        setCount(response.data.total);
       } catch (error) {
         console.error('커피 소비량 불러오기 실패:', error);
       }
@@ -46,7 +63,7 @@ export default MonthCoffeeCount;
 const Container = styled.div`
   background-color: ${colors.white};
   border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
               0 -2px 6px rgba(0, 0, 0, 0.05);
   padding: 20px;
   display: flex;

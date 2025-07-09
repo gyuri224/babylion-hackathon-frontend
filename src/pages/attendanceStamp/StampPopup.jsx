@@ -22,7 +22,7 @@ const AttendancePopup = ({ onClose }) => {
           확인할 수 있어요
         </Description>
         <SubButton onClick={onClose}>확인</SubButton>
-        <LaterButton onClick={() => navigate('/settings/MyPage')}>마이페이지 가기</LaterButton>
+        <LaterButton onClick={() => navigate('https://coffeeloging.duckdns.org/settings/MyPage')}>마이페이지 가기</LaterButton>
       </PopupContainer>
     </Wrapper>
   );

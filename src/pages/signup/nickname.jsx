@@ -2,16 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
-
+import HeaderBars from '../../components/HeaderBarj';
 import Phone from '../../components/Phone';
-import Header1 from '../../components/Header';
 import SignupInput from '../../components/signupinput';
 import MainButton from '../../components/MainButton';
 import { MdClose } from 'react-icons/md';
 
 function NameInputPage() {
   const [name, setName] = useState('');
-  const [age, setAge] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -19,15 +18,17 @@ function NameInputPage() {
   const password = location.state?.password || '';
 
   const handleChange = (e) => setName(e.target.value);
+
   const clearName = () => setName('');
-  const handleAgeChange = (e) => setAge(e.target.value);
+  const clearConfirmPassword = () => setConfirmPassword('');
 
   const isValidName = () => {
     if (!name) return false;
     const specialChars = '._-';
-    const filtered = name.split('').filter(c =>
-      /[가-힣a-zA-Z0-9]/.test(c) || specialChars.includes(c)
-    ).join('');
+    const filtered = name
+      .split('')
+      .filter(c => /[가-힣a-zA-Z0-9]/.test(c) || specialChars.includes(c))
+      .join('');
 
     if (filtered !== name) return false;
 
@@ -44,53 +45,55 @@ function NameInputPage() {
     return false;
   };
 
-  const isValidAge = () => {
-    const num = Number(age);
-    return age !== '' && !isNaN(num) && num > 0 && num < 150;
-  };
-
   const handleNext = async () => {
     if (!isValidName()) {
       alert('별명을 올바르게 입력해주세요.');
       return;
     }
-    if (!isValidAge()) {
-      alert('나이를 올바르게 입력해주세요.');
+
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
       return;
     }
 
     try {
-      const response = await axios.post('/api/coffee/signup', {
+      // 1. 회원가입 요청
+      const signupRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
         email: id,
-        password: password,
+        password,
+        confirmPassword,
         nickname: name,
-        age: Number(age),
       });
 
-      if (response.status === 200) {
-        const { token } = response.data;
-        if (token) {
-          localStorage.setItem('token', token);
-        }
-        navigate('/con', { state: { id, password, name } });
+      // 2. 로그인 요청
+      const loginRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
+        email: id,
+        password,
+      });
+
+      const token = loginRes.data.token;
+      if (token) {
+        localStorage.setItem('accessToken', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        navigate('/home');
       } else {
-        alert(response.data.message || '회원가입에 실패했습니다.');
+        alert('로그인 실패: 토큰이 존재하지 않습니다.');
       }
     } catch (error) {
-      console.error('회원가입 요청 실패:', error);
-      if (error.response && error.response.data) {
-        alert(error.response.data.message || '회원가입에 실패했습니다.');
+      console.error('에러 발생:', error);
+      if (error.response?.status === 409) {
+        alert(error.response.data?.message || '이미 존재하는 계정입니다.');
+      } else if (error.response?.status === 401) {
+        alert('아이디 또는 비밀번호가 틀렸습니다.');
       } else {
-        alert('서버와 연결에 실패했습니다.');
+        alert('서버 오류가 발생했습니다.');
       }
     }
   };
 
   return (
     <Phone>
-      <Header1 title="회원가입" />
-
-      {/* 별명 입력 */}
+      <HeaderBars title="회원가입" />
       <InputWrapper>
         <SignupInput
           label="별명"
@@ -102,25 +105,26 @@ function NameInputPage() {
           <MdClose size={20} color={name ? '#888' : '#ccc'} />
         </ClearButton>
         <Message>국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)</Message>
-      </InputWrapper>
 
-      {/* 나이 입력 */}
-      <InputWrapper>
         <SignupInput
-          label="나이"
-          placeholder="나이를 숫자로 입력해주세요"
-          value={age}
-          onChange={handleAgeChange}
-          type="number"
+          label="비밀번호 확인"
+          placeholder="비밀번호를 다시 입력해주세요"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
         />
+        <ClearButton onClick={clearConfirmPassword}>
+          <MdClose size={20} color={confirmPassword ? '#888' : '#ccc'} />
+        </ClearButton>
+        <Message>비밀번호는 8자 이상, 영문/숫자/특수문자를 포함해야 합니다.</Message>
       </InputWrapper>
 
       <MainButton
         onClick={handleNext}
-        disabled={!isValidName() || !isValidAge()}
+        disabled={!isValidName()}
         style={{
-          backgroundColor: isValidName() && isValidAge() ? '#ff9223' : '#ffbb76',
-          marginTop: '360px',
+          backgroundColor: isValidName() ? '#ff9223' : '#ffbb76',
+          marginTop: '379px',
           marginLeft: '9px',
           color: 'white',
         }}
@@ -133,9 +137,9 @@ function NameInputPage() {
 
 export default NameInputPage;
 
+// 스타일
 const InputWrapper = styled.div`
   position: relative;
-  margin-bottom: 20px;
 `;
 
 const Message = styled.p`
