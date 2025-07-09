@@ -19,6 +19,7 @@ function NameInputPage() {
 
   const id = location.state?.id || '';
   const password = location.state?.password || '';
+  const passwordConfirm = location.state?.passwordConfirm || '';
 
   const handleChange = (e) => {
     setName(e.target.value);
@@ -61,7 +62,7 @@ function NameInputPage() {
 const signupResponse = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
   email: id,
   password,
-  passwordConfirm: password,
+  confirmPassword: passwordConfirm, // ✅ 키 이름을 정확히 맞추기
   nickname: name,
 });
 console.log("회원가입 완료:", signupResponse.data);
