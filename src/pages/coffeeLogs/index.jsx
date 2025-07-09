@@ -32,13 +32,9 @@ const CoffeeLogPage = () => {
   const amountOptions = Array.from({ length: 10 }, (_, i) => String(i));
 
   useEffect(() => {
-    // 최근 선택 메뉴를 서버에서 불러오기
     axios.get('https://coffeeloging.duckdns.org/api/coffee/recent-coffee')
-      .then(res => {
-        setRecentMenus(res.data);
-      })
+      .then(res => setRecentMenus(res.data))
       .catch(() => {
-        // fallback: localStorage 사용 (이전 방식)
         const saved = localStorage.getItem('recentMenus');
         if (saved) setRecentMenus(JSON.parse(saved));
       });
@@ -60,23 +56,26 @@ const CoffeeLogPage = () => {
     try {
       const token = localStorage.getItem("accessToken");
 
-await axios.post("https://coffeeloging.duckdns.org/api/coffee/record", {
-  userId: 1,
-  date: "2025-07-09",
-  coffeeName: "에스프레소",
-  quantity: 1
-}, {
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-});
-      // 출석 체크 API 호출
-      await axios.post('https://coffeeloging.duckdns.org/api/coffee/attend/check');
+      // 1. 커피 기록 저장 (토큰 포함)
+      await axios.post("https://coffeeloging.duckdns.org/api/coffee/record", body, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      // 2. 출석 체크 (토큰 포함 - 중요)
+      await axios.post('https://coffeeloging.duckdns.org/api/coffee/attend/check', null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
       setRecentMenus((prev) => {
         const updated = [menu, ...prev.filter((m) => m !== menu)];
         localStorage.setItem('recentMenus', JSON.stringify(updated.slice(0, 5)));
         return updated.slice(0, 5);
       });
+
       navigate('/log-complete');
     } catch (err) {
       alert('기록에 실패했습니다.');
@@ -166,7 +165,7 @@ await axios.post("https://coffeeloging.duckdns.org/api/coffee/record", {
 
 export default CoffeeLogPage;
 
-
+// 스타일
 const Form = styled.form.attrs({ id: 'coffee-log-form' })`
   display: flex;
   flex-direction: column;
@@ -211,36 +210,8 @@ const DateDisplay = styled.div`
   }
 `;
 
-const MenuButton = styled.button`
-  padding: 8px 0;
-  border-radius: 20px;
-  border: 1.5px solid ${colors.black_sub};
-  background-color: ${(props) => (props.selected ? colors.main : colors.white)};
-  color: ${(props) => (props.selected ? colors.white : colors.black)};
-  ${typography.des_bold};
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const MenuGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px 8px;
-  padding: 0 20px;
-  margin-top: 10px;
-  align-items: stretch;
-`;
-
 const ContentWrapper = styled.div`
-  min-height: calc(100vh - 88px); // 88px = 버튼(48) + 여백(40)
+  min-height: calc(100vh - 88px);
   padding-bottom: 88px;
 `;
 
@@ -255,4 +226,4 @@ const BottomButtonWrapper = styled.div`
   justify-content: center;
   background: transparent;
   z-index: 100;
-`; 
+`;
