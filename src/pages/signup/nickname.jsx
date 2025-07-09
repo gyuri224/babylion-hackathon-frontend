@@ -3,39 +3,31 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import axios from 'axios';
 import HeaderBars from '../../components/HeaderBarj';
-
 import Phone from '../../components/Phone';
-import Header1 from '../../components/Header';
 import SignupInput from '../../components/signupinput';
 import MainButton from '../../components/MainButton';
-import { MdClose } from 'react-icons/md'; // X 아이콘 불러오기
-import HeaderBar from '../../components/HeaderBar';
-function NameInputPage() {
-  
+import { MdClose } from 'react-icons/md';
 
+function NameInputPage() {
   const [name, setName] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
   const id = location.state?.id || '';
   const password = location.state?.password || '';
-  const passwordConfirm = location.state?.passwordConfirm || '';
+  const confirmPassword = location.state?.confirmPassword || ''; // 🔧 수정
 
-  const handleChange = (e) => {
-    setName(e.target.value);
-  };
+  const handleChange = (e) => setName(e.target.value);
 
-  const clearName = () => {
-    setName('');
-  };
+  const clearName = () => setName('');
 
   const isValidName = () => {
     if (!name) return false;
-
     const specialChars = '._-';
-    const filtered = name.split('').filter(c =>
-      /[가-힣a-zA-Z0-9]/.test(c) || specialChars.includes(c)
-    ).join('');
+    const filtered = name
+      .split('')
+      .filter(c => /[가-힣a-zA-Z0-9]/.test(c) || specialChars.includes(c))
+      .join('');
 
     if (filtered !== name) return false;
 
@@ -51,52 +43,52 @@ function NameInputPage() {
 
     return false;
   };
+
   const handleNext = async () => {
-  if (!isValidName()) {
-    alert('별명을 올바르게 입력해주세요.');
-    return;
-  }
-
-  try {
-    // 1. 회원가입
-const signupResponse = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
-  email: id,
-  password,
-  confirmPassword: passwordConfirm, // ✅ 키 이름을 정확히 맞추기
-  nickname: name,
-});
-console.log("회원가입 완료:", signupResponse.data);
-
-const loginResponse = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
-  email: id,
-  password,
-});
-const token = loginResponse.data.token;
-    if (token) {
-      localStorage.setItem("accessToken", token);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      navigate('/home');
-    } else {
-      alert('로그인 실패: 토큰이 존재하지 않습니다.');
+    if (!isValidName()) {
+      alert('별명을 올바르게 입력해주세요.');
+      return;
     }
 
-  } catch (error) {
-    console.error('에러 발생:', error);
-    if (error.response?.status === 409) {
-      alert('이미 존재하는 계정입니다.');
-    } else if (error.response?.status === 401) {
-      alert('아이디 또는 비밀번호가 틀렸습니다.');
-    } else {
-      alert('서버 오류가 발생했습니다.');
-    }
-  }
-};
+    try {
+      // 1. 회원가입 요청
+      const signupRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
+        email: id,
+        password,
+        confirmPassword,
+        nickname: name,
+      });
 
+      // 2. 로그인 요청
+      const loginRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
+        email: id,
+        password,
+      });
+
+      const token = loginRes.data.token;
+      if (token) {
+        localStorage.setItem("accessToken", token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        navigate('/home');
+      } else {
+        alert('로그인 실패: 토큰이 존재하지 않습니다.');
+      }
+
+    } catch (error) {
+      console.error('에러 발생:', error);
+      if (error.response?.status === 409) {
+        alert('이미 존재하는 계정입니다.');
+      } else if (error.response?.status === 401) {
+        alert('아이디 또는 비밀번호가 틀렸습니다.');
+      } else {
+        alert('서버 오류가 발생했습니다.');
+      }
+    }
+  };
 
   return (
     <Phone>
       <HeaderBars title="회원가입" />
-
       <InputWrapper>
         <SignupInput
           label="별명"
@@ -104,11 +96,9 @@ const token = loginResponse.data.token;
           value={name}
           onChange={handleChange}
         />
-        {/* 항상 X 버튼을 표시 */}
-        <ClearButton onClick={clearName} style={{marginRight:'-20px'}}>
+        <ClearButton onClick={clearName} style={{ marginRight: '-20px' }}>
           <MdClose size={20} color={name ? '#888' : '#ccc'} />
         </ClearButton>
-
         <Message style={{ marginLeft: '16px' }}>
           국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)
         </Message>
@@ -132,7 +122,7 @@ const token = loginResponse.data.token;
 
 export default NameInputPage;
 
-// 스타일 정의
+// 스타일
 const InputWrapper = styled.div`
   position: relative;
 `;
