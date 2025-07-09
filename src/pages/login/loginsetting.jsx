@@ -56,7 +56,7 @@ function LoginSetting() {
 
     try {
       const response = await axios.post(`${BASE_URL}/api/coffee/login`, {
-        id,
+        email:id,
         password,
       });
 
