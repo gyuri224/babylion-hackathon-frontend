@@ -7,10 +7,12 @@ import Phone from '../../components/Phone';
 import SignupInput from '../../components/signupinput';
 import MainButton from '../../components/MainButton';
 import { MdClose } from 'react-icons/md';
+import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 function NameInputPage() {
   const [name, setName] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // ✅ 추가됨
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,7 +20,6 @@ function NameInputPage() {
   const password = location.state?.password || '';
 
   const handleChange = (e) => setName(e.target.value);
-
   const clearName = () => setName('');
   const clearConfirmPassword = () => setConfirmPassword('');
 
@@ -57,7 +58,7 @@ function NameInputPage() {
     }
 
     try {
-      // 1. 회원가입 요청
+      // 회원가입 요청
       const signupRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
         email: id,
         password,
@@ -65,7 +66,7 @@ function NameInputPage() {
         nickname: name,
       });
 
-      // 2. 로그인 요청
+      // 로그인 요청
       const loginRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
         email: id,
         password,
@@ -95,6 +96,7 @@ function NameInputPage() {
     <Phone>
       <HeaderBars title="회원가입" />
       <InputWrapper>
+        {/* 별명 입력 */}
         <SignupInput
           label="별명"
           placeholder="별명을 입력해주세요"
@@ -106,17 +108,24 @@ function NameInputPage() {
         </ClearButton>
         <Message>국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)</Message>
 
+        {/* 비밀번호 확인 입력 */}
         <SignupInput
+        
           label="비밀번호 확인"
           placeholder="비밀번호를 다시 입력해주세요"
-          type="password"
+          type={showPassword ? 'text' : 'password'}  
           value={confirmPassword}
+          
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
         <ClearButton onClick={clearConfirmPassword}>
           <MdClose size={20} color={confirmPassword ? '#888' : '#ccc'} />
         </ClearButton>
-        <Message>비밀번호는 8자 이상, 영문/숫자/특수문자를 포함해야 합니다.</Message>
+
+        {/* 눈 아이콘 버튼 */}
+        <ToggleButton onClick={() => setShowPassword(!showPassword)}>
+          {showPassword ? <IoEyeOff /> : <IoEye />}
+        </ToggleButton>
       </InputWrapper>
 
       <MainButton
@@ -124,7 +133,7 @@ function NameInputPage() {
         disabled={!isValidName()}
         style={{
           backgroundColor: isValidName() ? '#ff9223' : '#ffbb76',
-          marginTop: '379px',
+          marginTop: '309px',
           marginLeft: '9px',
           color: 'white',
         }}
@@ -137,7 +146,7 @@ function NameInputPage() {
 
 export default NameInputPage;
 
-// 스타일
+// ⭐ 스타일 컴포넌트
 const InputWrapper = styled.div`
   position: relative;
 `;
@@ -147,6 +156,7 @@ const Message = styled.p`
   color: #888;
   margin-top: 4px;
   margin-left: 16px;
+  margin-bottom: 17px;
 `;
 
 const ClearButton = styled.button`
@@ -157,4 +167,17 @@ const ClearButton = styled.button`
   border: none;
   padding: 4px;
   cursor: pointer;
+  margin-right: -19px;
+`;
+
+const ToggleButton = styled.button`
+  position: absolute;
+  right: 20px;
+  top: 160px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #AEAEAE;
+  margin-Right: -14px
 `;
