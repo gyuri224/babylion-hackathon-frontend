@@ -31,6 +31,7 @@ const showToast = (message) => {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      marginBottom: '100px'
     },
   });
 };
