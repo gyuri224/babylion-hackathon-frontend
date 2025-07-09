@@ -11,19 +11,17 @@ import HomeNavBar from '../../components/HomeNavBar';
 import CoffeeReport from './components/CoffeeReport';
 import AttendancePopup from './components/AttendancePopup';
 
-// 임시 사용자 데이터 (백엔드 연동 전 테스트용)
-const mockUser = {
-  nickname: '김나리'
-};
-
-const HomePage = () => {
+ const HomePage = () => {
   const [user, setUser] = useState(null);
   const [showPopup, setShowPopup] = useState(true);
 
   useEffect(() => {
-    // 실제로는 API 요청을 통해 유저 정보 불러옴
-    setUser(mockUser);
+    const storedNickname = localStorage.getItem('nickname');
+    if (storedNickname) {
+      setUser({ nickname: storedNickname });
+    }
   }, []);
+
 
   if (!user) return <div>로딩 중...</div>;
 

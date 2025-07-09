@@ -62,8 +62,17 @@ function LoginSetting() {
 
       if (response.status === 200) {
         const { token } = response.data;
+        const res = await axios.get('https://example.com/api/data', {
+        headers: {
+        Authorization: `Bearer ${token}`,
+        },
+});
+
         if (token) {
           localStorage.setItem('token', token);
+        }
+        if(nickname){
+          localStorage.setItem('nickname',nickname);
         }
         navigate('/home');
       } else {
