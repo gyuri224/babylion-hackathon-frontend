@@ -13,6 +13,9 @@ import { useAuthStore } from '../../store/useAuthStore';
 
 const CoffeeLogPage = () => {
   const navigate = useNavigate();
+  const accessToken = useAuthStore.getState().accessToken;
+  const token = accessToken || localStorage.getItem("accessToken");
+  const userId = localStorage.getItem("id");
 
   const years = Array.from({ length: 10 }, (_, i) => `${2016 + i}년`);
   const months = Array.from({ length: 12 }, (_, i) => `${i + 1}월`);
@@ -32,16 +35,10 @@ const CoffeeLogPage = () => {
   const [showAmountWheel, setShowAmountWheel] = useState(false);
   const amountOptions = Array.from({ length: 10 }, (_, i) => String(i));
 
-  const accessToken = useAuthStore.getState().accessToken;
-
   useEffect(() => {
-    // 최근 선택 메뉴를 서버에서 불러오기
     axios.get('https://coffeeloging.duckdns.org/api/coffee/recent-coffee')
-      .then(res => {
-        setRecentMenus(res.data);
-      })
+      .then(res => setRecentMenus(res.data))
       .catch(() => {
-        // fallback: localStorage 사용 (이전 방식)
         const saved = localStorage.getItem('recentMenus');
         if (saved) setRecentMenus(JSON.parse(saved));
       });
@@ -53,25 +50,40 @@ const CoffeeLogPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!token || !userId) {
+      alert('로그인이 필요합니다.');
+      return;
+    }
+
     const fullDate = `${pickerValue.year.replace('년', '')}-${pickerValue.month.replace('월', '').padStart(2, '0')}-${pickerValue.day.replace('일', '').padStart(2, '0')}`;
+
     const body = {
+      userId,
       date: fullDate,
       coffeeName: menu,
       quantity: Number(amount),
     };
+
     try {
-      await axios.post('/api/coffee/record', body, {
+      await axios.post("https://coffeeloging.duckdns.org/api/coffee/record", body, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`
         }
       });
-      // 출석 체크 API 호출
-      await axios.post('/api/coffee/attend/check');
+
+      await axios.post('https://coffeeloging.duckdns.org/api/coffee/attend/check', null, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
       setRecentMenus((prev) => {
         const updated = [menu, ...prev.filter((m) => m !== menu)];
         localStorage.setItem('recentMenus', JSON.stringify(updated.slice(0, 5)));
         return updated.slice(0, 5);
       });
+
       navigate('/log-complete');
     } catch (err) {
       alert('기록에 실패했습니다.');
@@ -161,7 +173,7 @@ const CoffeeLogPage = () => {
 
 export default CoffeeLogPage;
 
-
+// 스타일
 const Form = styled.form.attrs({ id: 'coffee-log-form' })`
   display: flex;
   flex-direction: column;
@@ -206,36 +218,8 @@ const DateDisplay = styled.div`
   }
 `;
 
-const MenuButton = styled.button`
-  padding: 8px 0;
-  border-radius: 20px;
-  border: 1.5px solid ${colors.black_sub};
-  background-color: ${(props) => (props.selected ? colors.main : colors.white)};
-  color: ${(props) => (props.selected ? colors.white : colors.black)};
-  ${typography.des_bold};
-  cursor: pointer;
-  transition: background 0.15s, color 0.15s;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-const MenuGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px 8px;
-  padding: 0 20px;
-  margin-top: 10px;
-  align-items: stretch;
-`;
-
 const ContentWrapper = styled.div`
-  min-height: calc(100vh - 88px); // 88px = 버튼(48) + 여백(40)
+  min-height: calc(100vh - 88px);
   padding-bottom: 88px;
 `;
 
@@ -250,4 +234,4 @@ const BottomButtonWrapper = styled.div`
   justify-content: center;
   background: transparent;
   z-index: 100;
-`; 
+`;

@@ -30,7 +30,7 @@ function Password() {
   }, [location.state]);
 
   const handleNext = () => {
-    navigate('/pwcheck', { state: { password, id } });
+    navigate('/api/coffee/signup', { state: { password, id } });
   };
 
 

@@ -19,7 +19,6 @@ function InputIdpage() {
     return regex.test(email);
   };
 
-  // ✅ 공통 토스트 출력 함수
   const showToast = (message) => {
     toast(message, {
       icon: false,
@@ -35,22 +34,22 @@ function InputIdpage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop:'500px',
-        marginRight:'-28px'
-
       },
     });
   };
 
   const handlePassword = async () => {
+    if (!isEmail(id)) {
+      showToast('이메일 형식으로 작성해주세요');
+      return;
+    }
+
     let exists = false;
-
     try {
-const response = await axios.post(
-  'https://coffeeloging.duckdns.org/api/coffee/check-email',
-  { email: id },
-  { withCredentials: true }   // ✅ 이게 포인트!
-
+      const response = await axios.post(
+        'https://coffeeloging.duckdns.org/api/coffee/check-email',
+        { email: id },
+        { withCredentials: true }
       );
       exists = response.data.exists;
     } catch (error) {
@@ -63,12 +62,7 @@ const response = await axios.post(
       return;
     }
 
-    if (!isEmail(id)) {
-      showToast('이메일 형식으로 작성해주세요');
-      return;
-    }
-
-  navigate('/password', { state: { id } });
+    navigate('/password', { state: { id } });
   };
 
   return (
@@ -108,18 +102,16 @@ const response = await axios.post(
         다음
       </MainButton>
 
-      {/* ✅ 버튼 바로 위 중앙 정렬된 토스트 컨테이너 */}
       <div
         style={{
           position: 'fixed',
-          bottom: '60px', // 버튼 바로 위 위치
-          left: '100px',
+          bottom: '60px',
+          left: 0,
           right: 0,
           zIndex: 9999,
           display: 'flex',
           justifyContent: 'center',
-          pointerEvents: 'none', 
-
+          pointerEvents: 'none',
         }}
       >
         <ToastContainer
@@ -130,7 +122,7 @@ const response = await axios.post(
           draggable={false}
           theme="colored"
           style={{
-            width: '327px', 
+            width: '327px',
           }}
         />
       </div>

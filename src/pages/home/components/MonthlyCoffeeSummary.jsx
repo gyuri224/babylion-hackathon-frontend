@@ -36,8 +36,8 @@ const MonthCoffeeCount = ({ month = '7월' }) => {
       }
     };
 
-    fetchCoffeeCount();
-  }, [month]);
+  fetchCoffeeCount();
+}, [month]);
 
   return (
     <Container>

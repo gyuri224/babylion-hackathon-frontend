@@ -15,15 +15,22 @@ const MonthCoffeeCount = ({ month = '7월' }) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const fetchCoffeeCount = async () => {
-      try {
-        const response = await axios.get('https://coffeeloging.duckdns.org/api/coffee/monthly-total', { params: { month } });
-        setCount(response.data.total);
-      } catch (error) {
-        console.error('커피 소비량 불러오기 실패:', error);
-      }
-    };
-    fetchCoffeeCount();
+  const fetchCoffeeCount = async () => {
+    try {
+      const token = localStorage.getItem("accessToken");
+      const response = await axios.get('https://coffeeloging.duckdns.org/api/coffee/monthly-total', {
+        params: { month },
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      setCount(response.data.totalQuantity); // ← 여기도 정확히 확인
+    } catch (error) {
+      console.error('커피 소비량 불러오기 실패:', error);
+    }
+  };
+  fetchCoffeeCount();
+
   }, [month]);
 
   return (
