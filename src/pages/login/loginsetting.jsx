@@ -61,20 +61,12 @@ function LoginSetting() {
       });
 
       if (response.status === 200) {
-        const { token, nickname } = response.data;
-        /*
-        const res = await axios.get('https://example.com/api/data', {
-        headers: {
-        Authorization: `Bearer ${token}`,
-        },
-});*/
+        const { token } = response.data;
 
         if (token) {
           localStorage.setItem('token', token);
         }
-        if(nickname){
-          localStorage.setItem('nickname',nickname);
-        }
+
         navigate('/home');
       } else {
         showToast('아이디/비밀번호가 일치하지 않아요');
