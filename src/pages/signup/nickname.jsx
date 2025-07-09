@@ -10,16 +10,17 @@ import { MdClose } from 'react-icons/md';
 
 function NameInputPage() {
   const [name, setName] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
 
   const id = location.state?.id || '';
   const password = location.state?.password || '';
-  const confirmPassword = location.state?.confirmPassword || ''; // 🔧 수정
 
   const handleChange = (e) => setName(e.target.value);
 
   const clearName = () => setName('');
+  const clearConfirmPassword = () => setConfirmPassword('');
 
   const isValidName = () => {
     if (!name) return false;
@@ -50,6 +51,11 @@ function NameInputPage() {
       return;
     }
 
+    if (password !== confirmPassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
     try {
       // 1. 회원가입 요청
       const signupRes = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
@@ -67,17 +73,16 @@ function NameInputPage() {
 
       const token = loginRes.data.token;
       if (token) {
-        localStorage.setItem("accessToken", token);
+        localStorage.setItem('accessToken', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         navigate('/home');
       } else {
         alert('로그인 실패: 토큰이 존재하지 않습니다.');
       }
-
     } catch (error) {
       console.error('에러 발생:', error);
       if (error.response?.status === 409) {
-        alert('이미 존재하는 계정입니다.');
+        alert(error.response.data?.message || '이미 존재하는 계정입니다.');
       } else if (error.response?.status === 401) {
         alert('아이디 또는 비밀번호가 틀렸습니다.');
       } else {
@@ -96,12 +101,22 @@ function NameInputPage() {
           value={name}
           onChange={handleChange}
         />
-        <ClearButton onClick={clearName} style={{ marginRight: '-20px' }}>
+        <ClearButton onClick={clearName}>
           <MdClose size={20} color={name ? '#888' : '#ccc'} />
         </ClearButton>
-        <Message style={{ marginLeft: '16px' }}>
-          국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)
-        </Message>
+        <Message>국문 2~5자, 영문 3~7자, 숫자, 특수기호(. _ -)</Message>
+
+        <SignupInput
+          label="비밀번호 확인"
+          placeholder="비밀번호를 다시 입력해주세요"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
+        <ClearButton onClick={clearConfirmPassword}>
+          <MdClose size={20} color={confirmPassword ? '#888' : '#ccc'} />
+        </ClearButton>
+        <Message>비밀번호는 8자 이상, 영문/숫자/특수문자를 포함해야 합니다.</Message>
       </InputWrapper>
 
       <MainButton
@@ -131,7 +146,7 @@ const Message = styled.p`
   font-size: 12px;
   color: #888;
   margin-top: 4px;
-  margin-left: 2px;
+  margin-left: 16px;
 `;
 
 const ClearButton = styled.button`
