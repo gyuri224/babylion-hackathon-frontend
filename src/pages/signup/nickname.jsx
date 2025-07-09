@@ -58,23 +58,19 @@ function NameInputPage() {
 
   try {
     // 1. 회원가입
-    await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
-      email: id,
-      password,
-      nickname: name,
-    });
-console.log("🔐 로그인 요청: ", {
-      email: id,
-      password,
-    });
+const signupResponse = await axios.post('https://coffeeloging.duckdns.org/api/coffee/signup', {
+  email: id,
+  password,
+  passwordConfirm: password,
+  nickname: name,
+});
+console.log("회원가입 완료:", signupResponse.data);
 
-    // 2. 로그인
-    const response = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
-      email: id,
-      password,
-    });
-
-    const token = response.data.token;
+const loginResponse = await axios.post('https://coffeeloging.duckdns.org/api/coffee/login', {
+  email: id,
+  password,
+});
+const token = loginResponse.data.token;
     if (token) {
       localStorage.setItem("accessToken", token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
