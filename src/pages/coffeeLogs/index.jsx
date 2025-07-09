@@ -58,7 +58,18 @@ const CoffeeLogPage = () => {
       quantity: Number(amount),
     };
     try {
-      await axios.post('https://coffeeloging.duckdns.org/api/coffee/record', body);
+      const token = localStorage.getItem("accessToken");
+
+await axios.post("https://coffeeloging.duckdns.org/api/coffee/record", {
+  userId: 1,
+  date: "2025-07-09",
+  coffeeName: "에스프레소",
+  quantity: 1
+}, {
+  headers: {
+    Authorization: `Bearer ${token}`
+  }
+});
       // 출석 체크 API 호출
       await axios.post('https://coffeeloging.duckdns.org/api/coffee/attend/check');
       setRecentMenus((prev) => {

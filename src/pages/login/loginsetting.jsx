@@ -1,34 +1,39 @@
-import ImageButton from '../../components/previous';
 import React, { useState } from 'react';
-import { IoEye, IoEyeOff } from 'react-icons/io5';
-import { MdClose } from 'react-icons/md';
 import { useNavigate } from 'react-router-dom';
+import { MdClose } from 'react-icons/md';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import axios from 'axios';
+import styled from 'styled-components';
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import ImageButton from '../../components/previous';
 import Phone from '../../components/Phone';
 import MainButton from '../../components/MainButton';
 import SignupInput from '../../components/signupinput';
-import axios from 'axios';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import HeaderBar from '../../components/HeaderBar';
 import HeaderBars from '../../components/HeaderBarj';
-import { ToastContainer, toast } from 'react-toastify';
-import { Slide } from 'react-toastify';
-import styled from 'styled-components';
-import 'react-toastify/dist/ReactToastify.css';
 
 const BASE_URL = "https://coffeeloging.duckdns.org";
-const ClearButton = styled.button`
-  position: absolute;
-  right: 20px;
-  top: 46px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: -10px;
-`;
+
+// ✅ 토스트 메시지 함수는 컴포넌트 바깥 또는 맨 위에 위치
+const showToast = (message) => {
+  toast(message, {
+    icon: false,
+    style: {
+      backgroundColor: '#FFEDDB',
+      color: '#FF9223',
+      fontWeight: '400',
+      fontSize: '12px',
+      width: '320px',
+      height: '10px',
+      lineHeight: '150%',
+      fontFamily: "'Pretendard', sans-serif",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+  });
+};
 
 function LoginSetting() {
   const [id, setId] = useState('');
@@ -36,38 +41,16 @@ function LoginSetting() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(id)) {
-    showToast('이메일 형식으로 입력해주세요');
-    return;
-  }
-
-
   const isLoginEnabled = id.trim() !== '' && password.trim() !== '';
 
-  // ✅ 실패 토스트 메시지 함수
-  const showToast = (message) => {
-    toast(message, {
-      icon: false,
-      style: {
-        backgroundColor: '#FFEDDB',
-        color: '#FF9223',
-        fontWeight: '400',
-        fontSize: '12px',
-        width: '320px',
-        height: '10px',
-        lineHeight: '150%',
-        fontFamily: "'Pretendard', sans-serif",
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom:'100px',
-        marginRight:'0px'
-         },
-    });
-  };
-
   const handleLogin = async () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(id)) {
+      showToast('이메일 형식으로 입력해주세요');
+      return;
+    }
+
     if (!isLoginEnabled) return;
 
     try {
@@ -79,14 +62,14 @@ function LoginSetting() {
       if (response.status === 200) {
         navigate('/home');
       } else {
-        showToast('아이디/비밀번호가 일치하지 않아요'); // ✅ 서버 응답 이상 시 토스트
+        showToast('아이디/비밀번호가 일치하지 않아요');
       }
     } catch (error) {
       console.error('로그인 실패:', error);
       if (error.response && error.response.status === 401) {
-        showToast('아이디와 비밀번호가 일치하지 않아요'); // ✅ 아이디/비번 불일치 시 토스트
-      } else {
         showToast('아이디와 비밀번호가 일치하지 않아요');
+      } else {
+        showToast('서버 오류가 발생했습니다');
       }
     }
   };
@@ -144,7 +127,8 @@ function LoginSetting() {
           )}
         </button>
       </div>
-<ToastContainer
+
+      <ToastContainer
         position="bottom-center"
         autoClose={2000}
         hideProgressBar
@@ -153,8 +137,12 @@ function LoginSetting() {
         draggable={false}
         theme="colored"
         transition={Slide}
-        padding={0}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}
       />
+
       <MainButton
         onClick={handleLogin}
         disabled={!isLoginEnabled}
@@ -168,11 +156,22 @@ function LoginSetting() {
       >
         로그인
       </MainButton>
-
-      {/* ✅ 토스트 컨테이너 */}
-      
     </Phone>
   );
 }
 
 export default LoginSetting;
+
+const ClearButton = styled.button`
+  position: absolute;
+  right: 20px;
+  top: 46px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: -10px;
+`;
