@@ -32,7 +32,7 @@ function PasswordCheck() {
           fontFamily: 'Pretendard, sans-serif',
           width: '327px',
           height: '32px',
-          marginBottom:'100px'
+          marginBottom: '100px',
         },
         position: 'bottom-center',
         autoClose: 1500,
@@ -41,7 +41,10 @@ function PasswordCheck() {
       return;
     }
 
-    navigate('/api/coffee/signup', { state: { id, password } }); // 실제 라우팅 경로 확인 필요
+    // ✅ confirmPassword 함께 전달
+    navigate('/api/coffee/signup', {
+      state: { id, password, confirmPassword },
+    });
   };
 
   return (
